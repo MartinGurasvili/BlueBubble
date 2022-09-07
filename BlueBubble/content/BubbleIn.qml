@@ -6,31 +6,39 @@ Item {
     property string msg: "helloshjkhasfkjhajksfhjkhsfjkajkshfjkasfhafs"
     // property bool hig: tm.width< 230
     property bool htog: false
+    x:-460
+    anchors.leftMargin: 0
     Rectangle {
         id: rectangle
-        //property alias text: text1.text
         x: 0
         y: 0
+        //property alias text: text1.text
+        // anchors.leftMargin: 220
+        // anchors.rightMargin: 400
+        
+        anchors.left: parent.right;
+        //  anchors.rightMargin: -220
 
         width: (tm.width<100) ? tm.width*2 : 250
         height: (tm.text.length/40)*35+40
-        color: "#30cfd0"
+        color: "#bdc3c7"
 
         gradient: Gradient {
             orientation: Gradient.Horizontal
             GradientStop {
                 position: 1
-                color: "#4facfe"
+                color: "#2c3e50"
             }
 
             GradientStop {
                 position: 0
-                color: "#00f2fe"
+                color: "#bdc3c7"
             }
         }
         radius: 20
         opacity: 0.8
-        anchors.right:parent.right
+        
+        
 
         Text {
             id: text1
@@ -67,9 +75,10 @@ Item {
 
         Image {
             id: heart
-            x: -37
+            // x: -37
             y: -12
-            anchors.verticalCenter: parent.Center
+            anchors.left: parent.right
+            anchors.leftMargin:-40
             width: 77
             height: 27
             opacity: 0
@@ -82,6 +91,7 @@ Item {
                 id:  inn
                 target:heart
                 property: "opacity"
+                paused: false
                 to: 0.7
                 duration: 700
                 running: false

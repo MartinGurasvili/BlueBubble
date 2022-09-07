@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 import QtQuick.Layouts
-import Qt5Compat.GraphicalEffects
-//import backend
+//import Qt5Compat.GraphicalEffects
+import backend
 
 
 Window {
@@ -31,7 +31,7 @@ Window {
     property var sprite
     property var component;
     property var allmsgs : [ ]
-
+    property string port
     property var currentmsgs:ListModel{}
     property var allcon:ListModel{
 
@@ -45,13 +45,13 @@ Window {
         }
         ListElement{
             element: " contact.qml"
-            name:"coolguy"
+            name:"Martin"
             c1:"#ffafbd"
             c2:"#ffc3a0"
         }
         ListElement{
             element: " contact.qml"
-            name:"jakub"
+            name:"Jakub"
             c1:"#2193b0"
             c2:"#6dd5ed"
         }
@@ -96,9 +96,9 @@ Window {
 
     }
 
-    //    Bridge {
-    //            id: bridge
-    //        }
+       Bridge {
+               id: bridge
+           }
     Item {
         id: login
         visible:true
@@ -126,8 +126,8 @@ Window {
             radius: 30
             border.width: -1
             Component.onCompleted: {
-                name = bridge.load_user(name)
-                console.log(name)
+                //name = bridge.load_user(name)
+                //console.log(name)
                 if(name !="")
                 {
                     login.visible = false;
@@ -195,7 +195,9 @@ Window {
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
-                            bridge.login(name)
+                            //bridge.message(name)
+                            port =bridge.login(name)
+                            console.log(port)
                         }}
                 }
                 MouseArea {
@@ -516,7 +518,8 @@ Window {
                 width: 500
                 height: 100
                 radius: 30
-                anchors.fill: fastBlur1
+                // anchors.fill: fastBlur1
+                opacity:0.9
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
                     GradientStop {
@@ -531,18 +534,18 @@ Window {
                 }
             }
 
-            FastBlur {
-                id: fastBlur1
-                width: 500
-                height: 100
-                opacity: 0.55
-                radius: 27
-                source: ShaderEffectSource {
-                    sourceItem: blurgrid
-                    sourceRect: Qt.rect(0, 0, fastBlur1.width, fastBlur1.height)
-                }
-                transparentBorder: true
-            }
+            // FastBlur {
+            //     id: fastBlur1
+            //     width: 500
+            //     height: 100
+            //     opacity: 0.55
+            //     radius: 27
+            //     source: ShaderEffectSource {
+            //         sourceItem: blurgrid
+            //         sourceRect: Qt.rect(0, 0, fastBlur1.width, fastBlur1.height)
+            //     }
+            //     transparentBorder: true
+            // }
 
 
             Rectangle {
@@ -553,6 +556,7 @@ Window {
                 height: 60
                 color: "#30cfd0"
                 radius: 30
+                opacity:0.9
                 gradient: Gradient {
                     GradientStop {
                         position: 0
@@ -569,8 +573,8 @@ Window {
 
             Text {
                 id: text6
-                x: 157
-                y: 27
+                x: 150
+                y: 25
                 width: 187
                 height: 47
                 color: "#ffffff"
@@ -599,15 +603,21 @@ Window {
                 z:4
                 width: 53
                 height: 53
-                text: qsTr("<")
-                highlighted: true
-                flat: true
-                font.family: "Rubik"
-                font.pointSize: 38
+                    Text {
+                        color: "white"
+                        text: qsTr("<")
+                        x: 18
+                        y: 2
+                        width: 53
+                        height: 53
+                        font.family: "Rubik"
+                        font.pointSize: 38
+                        font.styleName: "Thin"
+                    }
+                    flat: true   
+                    highlighted: true         
                 visible: false
-                //color:"#ffffff"
-
-                font.styleName: "Thin"
+                
                 onPressed: {
                     chataniout.running=true
                     backch.visible = false
@@ -642,10 +652,15 @@ Window {
 
 
         Rectangle {
+            id:textinputbox
             x: 10
             y: 700
             width: 480
-            height: 90
+            height: (textInput1.text.length<120) ? 90 :(Math.floor(textInput1.text.length/40))*30
+            opacity:0.9
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin:-790
+            // anchors.
             color: "#0072ff"
             gradient: Gradient {
                 orientation: Gradient.Horizontal
@@ -660,42 +675,43 @@ Window {
                 }
             }
             radius: 20
-            anchors.fill: fastBlur2
+            // anchors.fill: fastBlur2
         }
 
 
 
-        FastBlur {
-            id: fastBlur2
-            x: 10
-            y: 700
-            width: 480
-            height: 90
-            opacity: 0.55
-            radius: 27
-            source: ShaderEffectSource {
-                sourceItem: blurgrid
-                sourceRect: Qt.rect(10,700, fastBlur2.width, fastBlur2.height)
-            }
-            transparentBorder: true
-        }
+        // FastBlur {
+        //     id: fastBlur2
+        //     x: 10
+        //     y: 700
+        //     width: 480
+        //     height: 90
+        //     opacity: 0.55
+        //     radius: 27
+        //     source: ShaderEffectSource {
+        //         sourceItem: blurgrid
+        //         sourceRect: Qt.rect(10,700, fastBlur2.width, fastBlur2.height)
+        //     }
+        //     transparentBorder: true
+        // }
         TextInput {
             id: textInput1
             x: 20
             y: 710
             width: 420
-            height: 70
+            height: textinputbox.height
             color: "#ffffff"
             text: ""
-            font.pixelSize: 28
+            font.pixelSize: (textInput1.text.length<60) ? 25 : 20
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: textinputbox.verticalCenter
             wrapMode: Text.Wrap
-            selectByMouse: true
+            selectByMouse: false
+            focus:true
             activeFocusOnPress: true
             cursorVisible: true
             font.family: ff
-
             font.styleName: "Light"
             TextMetrics {
                 id: tm
@@ -722,7 +738,8 @@ Window {
 
 
 
-                }}
+                }
+                }
         }
 
 
@@ -730,6 +747,7 @@ Window {
             id: plane
             x: 440
             y: 726
+            anchors.verticalCenter: textinputbox.verticalCenter
             width: 40
             height: 40
             visible: true
@@ -914,7 +932,8 @@ Window {
             height: 102
 
             Rectangle {
-                anchors.fill: fastBlur
+                // anchors.fill: fastBlur
+                opacity:0.9
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
                     GradientStop {
@@ -928,29 +947,29 @@ Window {
                     }
                 }
                 width: 500
-                height: fastBlur.height
+                height: 100
                 radius: 30
 
 
 
 
             }
-            FastBlur {
-                id: fastBlur
-                x:0
-                y:0
-                height: 100
+            // FastBlur {
+            //     id: fastBlur
+            //     x:0
+            //     y:0
+            //     height: 100
 
-                width: parent.width
-                radius: 27
-                opacity: 0.5
+            //     width: parent.width
+            //     radius: 27
+            //     opacity: 0.5
 
-                source: ShaderEffectSource {
-                    sourceItem: flickable
-                    sourceRect: Qt.rect(0, 0, fastBlur.width, fastBlur.height)
-                }
-                transparentBorder: true
-            }
+            //     source: ShaderEffectSource {
+            //         sourceItem: flickable
+            //         sourceRect: Qt.rect(0, 0, fastBlur.width, fastBlur.height)
+            //     }
+            //     transparentBorder: true
+            // }
 
             Rectangle {
                 id: rectangle
@@ -1047,10 +1066,16 @@ Window {
         height: 20
         visible: true
         radius: 60
+        Text {
+                        color: "white"
+                        text: "—"
+                        font.pointSize: 13
+                        font.family: ff
+                       anchors.verticalCenter: parent.verticalCenter 
+                        x:3
 
-        text: "—"
-        font.pointSize: 13
-        font.family: ff
+                    }
+        
         layer.mipmap: false
         layer.enabled: false
         layer.format: ShaderEffectSource.RGBA
@@ -1088,13 +1113,21 @@ Window {
         height: 20
         visible: true
         radius: 351
-        text: "X"
-        font.pointSize: 12
+        Text {
+                        color: "white"
+                        text: "X"
+                        font.pointSize: 12
+                        font.family: "Rubik"
+                        
+                       //anchors.verticalCenter: parent.verticalCenter 
+                        x:6
+                        y:3
+
+                    }
         clip: false
         layer.format: ShaderEffectSource.RGBA
         layer.mipmap: false
         flat: false
-        font.family: ff
         focusPolicy: Qt.ClickFocus
         //spacing: 9
         highlighted: false
@@ -1125,7 +1158,6 @@ Window {
 /*##^##
 Designer {
     D{i:0;autoSize:true;formeditorZoom:1.1;height:480;width:640}D{i:3;invisible:true}
-D{i:35}D{i:58}D{i:72}
 }
 ##^##*/
 
