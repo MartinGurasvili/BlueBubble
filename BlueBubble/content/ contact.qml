@@ -11,19 +11,26 @@ Item {
     property color c2:"#009efd"
     property var temp:ListModel{
                            id: mod
-
                            ListElement{
                                element: "bspacer.qml"
                                name:" "
                                }
+                        //     ListElement{
+                        //        element: "BubbleIn.qml"
+                        //        name:"h"
+                        //    }
+                           
                            ListElement{
                                element: "time.qml"
                                name:""
                                }
-                           ListElement{
+                            ListElement{
                                element: "bspacer.qml"
-                               name:"wbb"
-                           }}
+                               name:" "
+                               }
+                           
+                           
+                           }
     MouseArea
     {
         width: parent.width
@@ -31,6 +38,8 @@ Item {
 //        onPressAndHold:console.log("darg")
 
         onClicked: {
+            bridge.message(port)
+
             mainani2.running= true
             //mainani.running= true
 
@@ -43,6 +52,9 @@ Item {
             messaging = text3.text
             var inlist = false
             var where = false
+            textInput1.selectByMouse =true;
+            textInput1.focus = true;
+            textInput1.selectByMouse = false;
             for(var x = 0;x<allmsgs.length;x++)
             {
                 if(allmsgs[x][0]==text3.text)

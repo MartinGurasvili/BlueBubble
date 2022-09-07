@@ -1,23 +1,27 @@
 import QtQuick 2.15
 
 Item {
-    width: 480
+    width: 500
     height: 110
+    x: 20
 
     property string msg:  new Date().toLocaleString(Qt.locale()).substring(0,(Date().toLocaleString(Qt.locale()).length-20))
 
     Rectangle {
         id: rectangle
          //property alias text: text1.text
-        x: 190
-        y: 42
+        
+        // y: 42
 
         width: 140
         height: 27
         color: "#33000000"
         radius: 20
+        anchors.verticalCenterOffset: 1
+        anchors.horizontalCenterOffset: 0
 
-        anchors.rightMargin: 148
+        // anchors.rightMargin: 148
+        anchors.centerIn: parent
 
         Text {
             id: text1
