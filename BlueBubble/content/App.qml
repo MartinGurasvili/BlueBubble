@@ -32,6 +32,7 @@ Window {
     property var component;
     property var allmsgs : [ ]
     property string port
+    property bool inChat :false
     property var currentmsgs:ListModel{}
     property var allcon:ListModel{
 
@@ -134,6 +135,7 @@ Window {
                     mainn.visible = true;
                     mainanii.running= true
                 }
+                
             }
             gradient: Gradient {
                 orientation: Gradient.Vertical
@@ -411,6 +413,19 @@ Window {
         id: chatt
         opacity: 1
         visible: false
+        Timer {
+            interval: 3000; running: true; repeat: true
+            onTriggered: {
+                if(inChat ==true)
+                {
+                    console.log("in chat")
+                    bridge.checkmessage("")
+                }
+                else{
+                    console.log("not in chat")
+                }
+            }
+        }
 
 
         PropertyAnimation {
@@ -613,6 +628,7 @@ Window {
                         font.family: "Rubik"
                         font.pointSize: 38
                         font.styleName: "Thin"
+
                     }
                     flat: true   
                     highlighted: true         
@@ -622,6 +638,7 @@ Window {
                     chataniout.running=true
                     backch.visible = false
                     mainani3.running=true
+                    inChat =false
                 }
                 PropertyAnimation {
                     id:  backchani
@@ -656,6 +673,7 @@ Window {
             x: 10
             y: 700
             width: 480
+            
             height: (textInput1.text.length<120) ? 90 :(Math.floor(textInput1.text.length/40))*30
             opacity:0.9
             anchors.bottom: parent.bottom
@@ -718,7 +736,7 @@ Window {
                 font: textInput1.font
                 text: textInput1.text
             }
-
+           
 
             Keys.onPressed: {z
                 if (event.key == Qt.Key_Return) {
@@ -728,13 +746,14 @@ Window {
                                                name:textInput1.text
 
                                            })
-
+                        bridge.sendmessage(textInput1.text)
 
                     }
 
                     //allmsg = mod
-
+                    
                     textInput1.text = ""
+                    
 
 
 

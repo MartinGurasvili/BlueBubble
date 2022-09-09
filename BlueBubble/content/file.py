@@ -64,8 +64,16 @@ class Bridge(QObject):
         # reactor.run()
         except:
             print("server already made")
-        reactor.listenUDP(port,Client("localhost",port))
-        reactor.run()
+        reactor.listenUDP(port,Client("localhost",port,""))
+        # reactor.run()
+    @Slot(str, result=str)
+    def sendmessage(self,a):
+        global port
+        reactor.listenUDP(port,Client("localhost",port,str(a)))
+    @Slot(str, result=str)
+    def checkmessage(self,a):
+        global port
+        reactor.listenUDP(port,Client("localhost",port,""))
 
 
 
@@ -85,10 +93,11 @@ class Server(DatagramProtocol):
 
 class Client(DatagramProtocol):
     
-    def __init__(self,host,port):
+    def __init__(self,host,port,msg):
         if host == "localhost":
             host = "127.0.0.1"
         self.h = host
+        self.msg = msg
         self.f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
         self.id = host,port
         self.address = None
@@ -107,17 +116,20 @@ class Client(DatagramProtocol):
                 self.address = self.h,12354
             else:
                 self.address = self.h,12345
-            reactor.callInThread(self.send_message)
+            reactor.callInThread(self.send_message(self.msg))
 
         else:
             decrypted = self.f.decrypt(datagram)
             datagram = str(decrypted)[1:len(str(decrypted))]
             print(datagram)
     
-    def send_message(self):
-        while True:
-            msg = self.f.encrypt(input(" ").encode())
+    def send_message(self,msg):
+        if msg != "":
+        # while True:
+            msg = self.f.encrypt(msg.encode())
             self.transport.write(msg,self.address)
+        else:
+            print("no message sent")
 
 
 

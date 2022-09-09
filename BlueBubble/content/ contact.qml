@@ -38,8 +38,8 @@ Item {
 //        onPressAndHold:console.log("darg")
 
         onClicked: {
-            bridge.message(port)
-
+            
+            inChat =true
             mainani2.running= true
             //mainani.running= true
 
@@ -85,7 +85,7 @@ Item {
             }
 
 
-
+            bridge.message(port)
         }
     }
     Rectangle {
