@@ -1,29 +1,61 @@
-import socket
+from socket import AF_INET, socket, SOCK_STREAM
+from threading import Thread
 
-known_port = 50002
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(('0.0.0.0', 55555))
+def accept_incoming_connections():
+    """Sets up handling for incoming clients."""
+    while True:
+        client, client_address = SERVER.accept()
+        print("%s:%s has connected." % client_address)
+        client.send(bytes("Greetings from the cave! Now type your name and press enter!", "utf8"))
+        addresses[client] = client_address
+        Thread(target=handle_client, args=(client,)).start()
 
-while True:
-    clients = []
+
+def handle_client(client):  # Takes client socket as argument.
+    """Handles a single client connection."""
+
+    name = client.recv(BUFSIZ).decode("utf8")
+    welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
+    client.send(bytes(welcome, "utf8"))
+    msg = "%s has joined the chat!" % name
+    broadcast(bytes(msg, "utf8"))
+    clients[client] = name
 
     while True:
-        data, address = sock.recvfrom(128)
-
-        print('connection from: {}'.format(address))
-        clients.append(address)
-
-        sock.sendto(b'ready', address)
-
-        if len(clients) == 2:
-            print('got 2 clients, sending details to each')
+        msg = client.recv(BUFSIZ)
+        if msg != bytes("{quit}", "utf8"):
+            broadcast(msg, name+": ")
+        else:
+            client.send(bytes("{quit}", "utf8"))
+            client.close()
+            del clients[client]
+            broadcast(bytes("%s has left the chat." % name, "utf8"))
             break
 
-    c1 = clients.pop()
-    c1_addr, c1_port = c1
-    c2 = clients.pop()
-    c2_addr, c2_port = c2
 
-    sock.sendto('{} {} {}'.format(c1_addr, c1_port, known_port).encode(), c2)
-    sock.sendto('{} {} {}'.format(c2_addr, c2_port, known_port).encode(), c1)  
+def broadcast(msg, prefix=""):  # prefix is for name identification.
+    """Broadcasts a message to all the clients."""
+
+    for sock in clients:
+        sock.send(bytes(prefix, "utf8")+msg)
+
+        
+clients = {}
+addresses = {}
+
+HOST = '127.0.0.1'
+PORT = 12345
+BUFSIZ = 1024
+ADDR = (HOST, PORT)
+
+SERVER = socket(AF_INET, SOCK_STREAM)
+SERVER.bind(ADDR)
+
+if __name__ == "__main__":
+    SERVER.listen(5)
+    print("Waiting for connection...")
+    ACCEPT_THREAD = Thread(target=accept_incoming_connections)
+    ACCEPT_THREAD.start()
+    ACCEPT_THREAD.join()
+    SERVER.close()
