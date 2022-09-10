@@ -30,12 +30,13 @@ Window {
     //FontLoader { id: webFont; source: "https://fonts.google.com/specimen/Nunito" }
     property var sprite
     property var component;
+    property string msg;
     property var allmsgs : [ ]
     property string port
     property bool inChat :false
+    property bool online :false
     property var currentmsgs:ListModel{}
     property var allcon:ListModel{
-
 
 
         ListElement{
@@ -414,12 +415,26 @@ Window {
         opacity: 1
         visible: false
         Timer {
-            interval: 3000; running: true; repeat: true
+            interval: 1000; running: true; repeat: true
             onTriggered: {
                 if(inChat ==true)
                 {
-                    console.log("in chat")
-                    bridge.checkmessage("")
+                    // console.log("in chat")
+                    msg = bridge.checkmessage("")
+                    if(msg !=""){
+                         currentmsgs.insert(1,{
+                                               element: "BubbleIn.qml",
+                                               name:msg
+
+                                           })
+                        onlineind.color = "#00FF00"
+                        online = true
+                         msg = ""
+                    }
+                    if(online == true){
+                        onlineind.color = "#00FF00"
+                    }
+                    
                 }
                 else{
                     console.log("not in chat")
@@ -628,7 +643,7 @@ Window {
                         font.family: "Rubik"
                         font.pointSize: 38
                         font.styleName: "Thin"
-
+                       
                     }
                     flat: true   
                     highlighted: true         
@@ -639,6 +654,9 @@ Window {
                     backch.visible = false
                     mainani3.running=true
                     inChat =false
+                    online = false
+                    onlineind.color = "#ff0000"
+                     bridge.exit_chat("")
                 }
                 PropertyAnimation {
                     id:  backchani

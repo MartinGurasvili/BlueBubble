@@ -28,12 +28,12 @@ class Client(DatagramProtocol):
     
     def __init__(self,host,port):
         if host == "localhost":
-            host = "127.0.1.1"
+            host = "127.0.0.1"
         self.h = host
         self.f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
         self.id = host,port
         self.address = None
-        self.server = "127.0.1.1",9999
+        self.server = "127.0.0.1",9999
         print("Working on id:",self.id)
         
 

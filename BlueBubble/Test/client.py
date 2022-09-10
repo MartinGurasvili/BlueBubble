@@ -1,19 +1,49 @@
 import socket
 import sys
 import threading
+import os
+import multiprocessing
+import time
 
-rendezvous = ('192.168.0.21', 55555)
-SERVER=(socket.gethostbyname_ex(socket.gethostname())[-1][3],55555)
-# connect to rendezvous
-print('connecting to rendezvous server')
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(('0.0.0.0', 50001))
-try:
-    sock.sendto(b'0', SERVER)
-except:
-    sock.sendto(b'0', rendezvous)
+def server_dep():
+    known_port = 50002
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('0.0.0.0', 55555))
+    clients = []
+
+    while True:
+        data, address = sock.recvfrom(128)
+
+        print('connection from: {}'.format(address))
+        clients.append(address)
+
+        sock.sendto(b'ready', address)
+
+        if len(clients) == 2:
+            print('got 2 clients, sending details to each')
+            break
+        time.sleep(1)
+
+    c1 = clients.pop()
+    c1_addr, c1_port = c1
+    c2 = clients.pop()
+    c2_addr, c2_port = c2
+
+    sock.sendto('{} {} {}'.format(c1_addr, c1_port, known_port).encode(), c2)
+    sock.sendto('{} {} {}'.format(c2_addr, c2_port, known_port).encode(), c1)
     
+# rendezvous = ('192.168.0.21', 55555)
+SERVER=(socket.gethostbyname_ex(socket.gethostname())[-1][3],55555)
+      
+
+# rendezvous = ("127.0.0.1",55555)
+
+port = 50003
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(('0.0.0.0', port))
+sock.sendto(b'0', SERVER)
 
 while True:
     data = sock.recv(1024).decode()
@@ -23,9 +53,9 @@ while True:
         break
 
 data = sock.recv(1024).decode()
-ip, sport, dport = data.split(' ')
-sport = int(sport)
-dport = int(dport)
+ip, dport, sport = data.split(' ')
+sport = int(port)
+dport = int(50002)
 
 print('\ngot peer')
 print('  ip:          {}'.format(ip))
@@ -63,3 +93,4 @@ sock.bind(('0.0.0.0', dport))
 while True:
     msg = input('> ')
     sock.sendto(msg.encode(), (ip, sport))
+
