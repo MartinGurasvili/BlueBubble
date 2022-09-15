@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Window
 import QtQuick.Layouts
 //import Qt5Compat.GraphicalEffects
-import backend
+//import backend
 
 
 Window {
@@ -94,14 +94,20 @@ Window {
             c1:"#ffd89b"
             c2:"#19547b"
         }
+        ListElement{
+            element: " contact.qml"
+            name:"Add New User"
+            c1:"#ffd89b"
+            c2:"#19547b"
+        }
 
 
 
     }
 
-       Bridge {
-               id: bridge
-           }
+    //    Bridge {
+    //        id: bridge
+    //    }
     Item {
         id: login
         visible:true
@@ -424,7 +430,7 @@ Window {
                     
                     msg = bridge.checkmessage("")
                     if(msg !="" && msg !=pastmsg ){
-                         currentmsgs.insert(1,{
+                        currentmsgs.insert(1,{
                                                element: "BubbleIn.qml",
                                                name:msg
 
@@ -432,7 +438,7 @@ Window {
                         onlineind.color = "#00FF00"
                         online = true
                         pastmsg = msg
-                         msg = ""
+                        msg = ""
                     }
                     if(online == true){
                         onlineind.color = "#00FF00"
@@ -638,20 +644,20 @@ Window {
                 z:4
                 width: 53
                 height: 53
-                    Text {
-                        color: "white"
-                        text: qsTr("<")
-                        x: 18
-                        y: 2
-                        width: 53
-                        height: 53
-                        font.family: "Rubik"
-                        font.pointSize: 38
-                        font.styleName: "Thin"
-                       
-                    }
-                    flat: true   
-                    highlighted: true         
+                Text {
+                    color: "white"
+                    text: qsTr("<")
+                    x: 18
+                    y: 2
+                    width: 53
+                    height: 53
+                    font.family: "Rubik"
+                    font.pointSize: 38
+                    font.styleName: "Thin"
+
+                }
+                flat: true
+                highlighted: true
                 visible: false
                 
                 onPressed: {
@@ -661,7 +667,7 @@ Window {
                     inChat =false
                     online = false
                     onlineind.color = "#ff0000"
-                     bridge.exit_chat("")
+                    bridge.exit_chat("")
                 }
                 PropertyAnimation {
                     id:  backchani
@@ -759,7 +765,7 @@ Window {
                 font: textInput1.font
                 text: textInput1.text
             }
-           
+
 
             Keys.onPressed: {z
                 if (event.key == Qt.Key_Return) {
@@ -781,7 +787,7 @@ Window {
 
 
                 }
-                }
+            }
         }
 
 
@@ -852,6 +858,348 @@ Window {
 
 
 
+    Item {
+        id: addUser
+        opacity: 1
+        visible: false
+        PropertyAnimation {
+            id:  aufadein
+            target:Rectangle
+            property: "opacity"
+            to: 1
+            duration: 300
+            running: false
+            from: 0
+        }
+        PropertyAnimation {
+            id:  aufadeout
+            target:Rectangle
+            property: "opacity"
+            to: 0
+            duration: 300
+            running: false
+            from: 1
+
+        }
+        
+        property double prog:1.0
+        Timer {
+            interval: 1000; running: true; repeat: true
+            onTriggered: {
+                var count = parseInt(countdown.text)
+                tform.xScale = count/30
+                countdown.text =  count - 1
+                if(count == 0){
+                    console.log("refresh")
+                    countdown.text = 30
+                    tform.xScale = 1.0
+                }
+
+            }}
+
+        Item {
+            id: item3
+            x: 0
+            y: 0
+            width: 500
+            height: 102
+            Rectangle {
+                x: 0
+                y: 0
+                width: 500
+                height: 800
+                opacity: 0.9
+                radius: 30
+                gradient: Gradient {
+                    orientation: Gradient.Horizontal
+                    GradientStop {
+                        position: 0
+                        color: "#4facfe"
+                    }
+
+                    GradientStop {
+                        position: 1
+                        color: "#00f2fe"
+                    }
+                }
+
+
+                Button {
+                    id: backmain
+                    x: 8
+                    y: 23
+                    width: 53
+                    height: 53
+                    visible: true
+                    highlighted: true
+                    flat: true
+                    Text {
+                        x: 18
+                        y: 2
+                        width: 53
+                        height: 53
+                        visible: true
+                        color: "#ffffff"
+                        text: qsTr("<")
+                        layer.enabled: true
+                        font.family: "Rubik"
+                        font.pointSize: 38
+                        font.styleName: "Thin"
+                    }
+                    background: Rectangle {
+                        id: loadd2
+                        opacity: 0
+                        color: "#000000"
+                        radius: 30
+                    }
+                    z: 7
+                }
+                RoundButton {
+                    id: roundButton2
+                    x: 66
+                    y: 696
+                    width: 369
+                    height: 74
+                    radius: 30
+                    text: "Add User"
+                    highlighted: true
+                    flat: true
+                    QtObject {
+                        id: bu1
+                        property var wl: if(roundButton){roundButton.down ? "#cf3429":"#000000"}
+                        property var op: if(roundButton){roundButton.down ? 0.2:0.1}
+                    }
+                    background: Rectangle {
+                        id: loaddd1
+                        opacity: bu1.op
+                        color: bu1.wl
+                        radius: 30
+                    }
+                    font.pointSize: 30
+                    font.weight: Font.Light
+                    font.family: ff
+                    z: 7
+                }
+
+                Text {
+                    id: placeholder1
+                    x: 52
+                    y: 618
+                    width: 383
+                    height: 41
+                    visible: true
+                    color: "#cecece"
+                    text: "Enter User's Unique ID"
+                    font.pixelSize: 30
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    font.family: ff
+                    font.italic: true
+                    font.styleName: "Light"
+                }
+
+                TextInput {
+                    id: textInput2
+                    x: 59
+                    y: 618
+                    width: 383
+                    height: 41
+                    color: "#ffffff"
+                    text: name
+                    font.pixelSize: 30
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    font.family: ff
+                    onTextChanged: {
+                        name = text
+                    }
+
+                    MouseArea {
+                        id: ma1
+                        anchors.fill: parent
+                        anchors.rightMargin: 0
+                        anchors.bottomMargin: 8
+                        anchors.leftMargin: 0
+                        anchors.topMargin: -8
+                        onClicked: {
+                            placeholder1.visible= false;
+                            ma1.enabled = false;
+                            textInput2.selectByMouse =true;
+                            textInput2.focus = true;
+                            textInput2.selectByMouse = false;
+                        }
+                        propagateComposedEvents: true
+                    }
+                    Keys.onPressed: {
+                        if (event.key == Qt.Key_Return) {
+                            if(name !=""){
+                                loaddd.color = "#ffffff"
+                                logout.running= true
+                                mainn.visible = true;
+                                mainanii.running= true
+                                //bridge.message(name)
+                                port =bridge.login(name)
+                                console.log(port)
+                            }}
+                    }
+                    font.styleName: "Light"
+                }
+
+                Rectangle {
+                    x: 41
+                    y: 600
+                    opacity: 0.1
+                    color: "#000000"
+                    radius: 30
+                    implicitWidth: 411
+                    implicitHeight: 77
+                }
+            }
+
+            Rectangle {
+                id: rectangle1
+                x: 125
+                y: 94
+                width: 250
+                height: 250
+                color: "#30cfd0"
+                radius: 125
+                gradient: Gradient {
+                    orientation: Gradient.Vertical
+                    GradientStop {
+                        position: 0
+                        color: "#30cfd0"
+                    }
+
+                    GradientStop {
+                        position: 1
+                        color: "#330867"
+                    }
+                }
+            }
+
+            Text {
+                id: text2
+                x: 68
+                y: 343
+                width: 364
+                height: 47
+                color: "#ffffff"
+                text: "MartinGur"
+                font.pixelSize: 40
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.family: ff
+                font.styleName: "Light"
+            }
+
+            Text {
+                id: text3
+                x: 68
+                y: 396
+                width: 364
+                height: 47
+                color: "#ffffff"
+                text: "Your Unique ID Will Renew in:"
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.family: ff
+                font.styleName: "Light"
+            }
+
+            Text {
+                id: countdown
+                x: 68
+                y: 429
+                width: 364
+                height: 47
+                color: "#ffffff"
+                text: "30"
+                font.pixelSize: 30
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.family: ff
+                font.styleName: "Light"
+
+                Rectangle {
+                    id: progbar
+                    x: 7
+                    y: 53
+                    width: 350
+                    height: 15
+                    color: "#ffffff"
+                    radius: 300
+
+                    transform: Scale {
+                        id: tform
+                        origin.x:175 ;
+                        xScale: 1.0
+                    }
+
+                    transformOrigin: Item.Center
+                    antialiasing: true
+                    gradient: Gradient {
+                        orientation: Gradient.Vertical
+                        GradientStop {
+                            position: 0
+                            color: "#f093fb"
+                        }
+
+                        GradientStop {
+                            position: 1
+                            color: "#f5576c"
+                        }
+                    }
+                }
+            }
+
+            TextEdit {
+                id: text5
+                x: 68
+                y: 493
+                width: 364
+                height: 94
+                readOnly: true
+                color: "#ffffff"
+                text: "safASFaghasfasgastsdgf"
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.family: ff
+                font.styleName: "Light"
+                selectByMouse: true
+            }
+        }
+
+        Rectangle {
+            width: 500
+            height: 100
+            opacity: 0
+            radius: 40
+            anchors.top: parent.top
+            z: 2
+            MouseArea {
+                width: parent.width
+                height: parent.height
+                opacity: 1
+                z: 2
+                onMouseXChanged: {
+                    var dx = mouseX - previousX
+                    mainWindow.setX(mainWindow.x + dx)
+                }
+                onMouseYChanged: {
+                    var dy = mouseY - previousY
+                    mainWindow.setY(mainWindow.y + dy)
+                }
+                onPressed: {
+                    previousX = mouseX
+                    previousY = mouseY
+                }
+            }
+        }
+    }
+
     Item{
         id:mainn
         opacity: 1
@@ -876,6 +1224,16 @@ Window {
             duration: 300
             running: false
             from: 1
+
+        }
+        PropertyAnimation {
+            id:  viskill
+            target:mainn
+            property: "visible"
+            to: false
+            duration: 300
+            running: false
+            from: true
 
         }
         PropertyAnimation {
@@ -966,6 +1324,43 @@ Window {
 
 
 
+        Rectangle {
+            width: 500
+            height: 100
+            radius: 40
+            opacity: 0
+
+            anchors.top: parent.top
+
+
+            z:2
+            MouseArea {
+                x: 80
+                y: 0
+                width: 420
+                z:2
+                opacity: 1
+                height: parent.height
+
+                onPressed: {
+                    previousX = mouseX
+                    previousY = mouseY
+                }
+
+                onMouseXChanged: {
+                    var dx = mouseX - previousX
+                    mainWindow.setX(mainWindow.x + dx)
+                }
+
+                onMouseYChanged: {
+                    var dy = mouseY - previousY
+                    mainWindow.setY(mainWindow.y + dy)
+                }
+
+            }
+
+        }
+
         Item {
             id: item2
             x: 0
@@ -1013,25 +1408,24 @@ Window {
             //     transparentBorder: true
             // }
 
-            Rectangle {
+            Button {
                 id: rectangle
                 x: 21
                 y: 20
+                z:9999999
+
                 width: 60
                 height: 60
-                color: "#30cfd0"
-                radius: 30
-                gradient: Gradient {
-                    orientation: Gradient.Vertical
-                    GradientStop {
-                        position: 0
-                        color: "#30cfd0"
-                    }
+                opacity: 0
+                clip: true
 
-                    GradientStop {
-                        position: 1
-                        color: "#330867"
-                    }
+                onClicked: {
+                    console.log("tousers")
+                    mainani.running = true
+                    viskill.running = true
+                    addUser.visible = true
+                    aufadein.running = true
+//                    mainn.visible = false
                 }
             }
 
@@ -1050,6 +1444,29 @@ Window {
                 font.styleName: "Light"
             }
 
+            Rectangle{
+                x: 21
+                y: 20
+
+
+                width: 60
+                height: 60
+                color: "#30cfd0"
+                radius: 30
+
+                gradient: Gradient {
+                    orientation: Gradient.Vertical
+                    GradientStop {
+                        position: 0
+                        color: "#30cfd0"
+                    }
+
+                    GradientStop {
+                        position: 1
+                        color: "#330867"
+                    }
+                }}
+
 
         }
 
@@ -1060,40 +1477,6 @@ Window {
 
 
 
-        Rectangle {
-            width: 500
-            height: 100
-            radius: 40
-            opacity: 0
-
-            anchors.top: parent.top
-
-
-            z:2
-            MouseArea {
-                z:2
-                opacity: 1
-                width: parent.width
-                height: parent.height
-
-                onPressed: {
-                    previousX = mouseX
-                    previousY = mouseY
-                }
-
-                onMouseXChanged: {
-                    var dx = mouseX - previousX
-                    mainWindow.setX(mainWindow.x + dx)
-                }
-
-                onMouseYChanged: {
-                    var dy = mouseY - previousY
-                    mainWindow.setY(mainWindow.y + dy)
-                }
-
-            }
-
-        }
 
 
     }
@@ -1109,14 +1492,14 @@ Window {
         visible: true
         radius: 60
         Text {
-                        color: "white"
-                        text: "—"
-                        font.pointSize: 13
-                        font.family: ff
-                       anchors.verticalCenter: parent.verticalCenter 
-                        x:3
+            color: "white"
+            text: "—"
+            font.pointSize: 13
+            font.family: ff
+            anchors.verticalCenter: parent.verticalCenter
+            x:3
 
-                    }
+        }
         
         layer.mipmap: false
         layer.enabled: false
@@ -1156,16 +1539,16 @@ Window {
         visible: true
         radius: 351
         Text {
-                        color: "white"
-                        text: "X"
-                        font.pointSize: 12
-                        font.family: "Rubik"
-                        
-                       //anchors.verticalCenter: parent.verticalCenter 
-                        x:6
-                        y:3
+            color: "white"
+            text: "X"
+            font.pointSize: 12
+            font.family: "Rubik"
 
-                    }
+            //anchors.verticalCenter: parent.verticalCenter
+            x:6
+            y:3
+
+        }
         clip: false
         layer.format: ShaderEffectSource.RGBA
         layer.mipmap: false
@@ -1179,7 +1562,7 @@ Window {
             bridge.quit("")
             
             
-            }
+        }
         QtObject{
             id:butsss
             property string colorDefult :"#1f1f1f1f"
@@ -1198,6 +1581,7 @@ Window {
 
 
 
+
 }
 
 
@@ -1205,6 +1589,7 @@ Window {
 /*##^##
 Designer {
     D{i:0;autoSize:true;formeditorZoom:1.1;height:480;width:640}D{i:3;invisible:true}
+D{i:107}
 }
 ##^##*/
 
