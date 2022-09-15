@@ -31,6 +31,7 @@ Window {
     property var sprite
     property var component;
     property string msg;
+    property string pastmsg;
     property var allmsgs : [ ]
     property string port
     property bool inChat :false
@@ -47,7 +48,7 @@ Window {
         }
         ListElement{
             element: " contact.qml"
-            name:"Martin"
+            name:"Maria"
             c1:"#ffafbd"
             c2:"#ffc3a0"
         }
@@ -59,37 +60,37 @@ Window {
         }
         ListElement{
             element: " contact.qml"
-            name:"amazon"
+            name:"Joe"
             c1:"#cc2b5e"
             c2:"#753a88"
         }
         ListElement{
             element: " contact.qml"
-            name:"madguy123"
+            name:"Ben"
             c1:"#42275a"
             c2:"#734b6d"
         }
         ListElement{
             element: " contact.qml"
-            name:"asasfasfa"
+            name:"Jasmine"
             c1:"#bdc3c7"
             c2:"#2c3e50"
         }
         ListElement{
             element: " contact.qml"
-            name:"greenguy"
+            name:"Brandon"
             c1:"#56ab2f"
             c2:"#a8e063"
         }
         ListElement{
             element: " contact.qml"
-            name:"ice cream"
+            name:"Maks"
             c1:"#eecda3"
             c2:"#ef629f"
         }
         ListElement{
             element: " contact.qml"
-            name:"graden"
+            name:"Seth"
             c1:"#ffd89b"
             c2:"#19547b"
         }
@@ -420,8 +421,9 @@ Window {
                 if(inChat ==true)
                 {
                     // console.log("in chat")
+                    
                     msg = bridge.checkmessage("")
-                    if(msg !=""){
+                    if(msg !="" && msg !=pastmsg ){
                          currentmsgs.insert(1,{
                                                element: "BubbleIn.qml",
                                                name:msg
@@ -429,6 +431,7 @@ Window {
                                            })
                         onlineind.color = "#00FF00"
                         online = true
+                        pastmsg = msg
                          msg = ""
                     }
                     if(online == true){
@@ -438,6 +441,8 @@ Window {
                 }
                 else{
                     console.log("not in chat")
+                    pastmsg = ""
+                    msg = ""
                 }
             }
         }
@@ -1169,7 +1174,12 @@ Window {
         //spacing: 9
         highlighted: false
         layer.enabled: false
-        onClicked:Qt.quit()
+        onClicked:{
+            Qt.quit()
+            bridge.quit("")
+            
+            
+            }
         QtObject{
             id:butsss
             property string colorDefult :"#1f1f1f1f"

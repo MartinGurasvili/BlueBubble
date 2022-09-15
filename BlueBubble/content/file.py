@@ -25,14 +25,6 @@ from twisted.internet import reactor
 from twisted.internet import task
 
 
-
-# message = "my deep dark secret".encode()
-# f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
-# encrypted = f.encrypt(message)
-# print(encrypted)
-# decrypted = f.decrypt(encrypted)
-# print(str(decrypted)[1:len(str(decrypted))])
-
 QML_IMPORT_NAME = "backend"
 QML_IMPORT_MAJOR_VERSION = 1
 # print(sys.modules)
@@ -60,13 +52,15 @@ class Bridge(QObject):
             return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),dtype=str))
         except:
             return ""
+        
     @Slot(str, result=str)
     def exit_chat(self,b):
        global loadedChat
        loadedChat = False
+       
     @Slot(str, result=str)
     def message(self,a):
-        global port,online,loadedChat
+        global port,online,loadedChat,loop
         port = int(a)
         try:
             reactor.listenUDP(9999,Server())
@@ -81,47 +75,42 @@ class Bridge(QObject):
         thread1.start()
         time.sleep(1)
         loadedChat = True
+        app.processEvents()
+        
+        loop = task.LoopingCall(refresh)
+
+            # Start looping every 1 second.
+        loopDeferred = loop.start(0.004)
+        
+        reactor.run()
+               
         
     
     @Slot(str, result=str)
     def sendmessage(self,a):
         global sendmsg
         sendmsg = a
-        # reactor.listenUDP(port,Client("localhost",port,str(a)))
+
+
     @Slot(str, result=str)
     def checkmessage(self,a):
         global port,msg,online
         app.processEvents()
-        if(loadedChat == True):
-            try:
-                loop = task.LoopingCall(refresh)
-
-                # Start looping every 1 second.
-                loopDeferred = loop.start(0.1)
-                reactor.run()
-               
-                app.processEvents()
-                # time.sleep(1)
-            except:
-                app.processEvents()
-                # del sys.modules["twisted.internet"]
-                # from twisted.internet import reactor
-                
-                print("co")
-                # try:
-                #    reactor.callLater(1, reactor.stop)
-                #    reactor.stop()
-                # except:
-                #     res()
-                #     # thread1 = threading.Thread(target=reactor.listenUDP(port,Client("localhost",port,"")))
-                #     # thread1.start()
-                # # reactor.stop()
-            return msg
+        return msg
+        
+    @Slot(str, result=str)
+    def quit(self,a):
+        global stopapp
+        stopapp = True
+        loop.stop()
+        reactor.stop()
+        print("done")
         app.processEvents()
-       
-        # Client("localhost",port,"").datagramReceived(self,"")
-        # reactor.listenUDP(port,Client("localhost",port,""))
-
+        quit()
+        exit()
+        print("done")
+        
+    
 
 
 
@@ -156,13 +145,14 @@ class Client(DatagramProtocol):
         time.sleep(1)
         
         self.transport.write("ready".encode('utf-8'),self.server)
+        reactor.callInThread(self.send_message)
         # reactor.callInThread(self.ref)
 
     def datagramReceived(self,datagram,addr):
         global msg
-        reactor.callInThread(app.processEvents)
+        # reactor.callInThread(app.processEvents)
         
-        app.processEvents()
+        # app.processEvents()
         print("hppening")
         if addr ==self.server:
            
@@ -170,10 +160,6 @@ class Client(DatagramProtocol):
                 self.address = self.h,12354
             else:
                 self.address = self.h,12345
-            
-            # reactor.callInThread(self.send_message)
-            # thread1 = threading.Thread(target=self.send_message)
-            # thread1.start()
         else:
             try:
                 decrypted = self.f.decrypt(datagram)
@@ -183,51 +169,47 @@ class Client(DatagramProtocol):
             except:
                 print(datagram)
                 msg = datagram
-        # thread2 = threading.Thread(target=refresh())
-        # thread2.start()
-        # app.processEvents()
-        # try:
-        #     reactor.callLater(2, reactor.stop)
+
         
-        # except:
-        #     print("reactor not deployed")
-        
-    def ref(self):
-        while loadedChat == True:
-            # print("working")
-            
-            app.processEvents()
-            
-            # time.sleep(0.1)
             
     def send_message(self):
         global sendmsg
-       
-        print(sendmsg)
-        if sendmsg != "":
-            if sendmsg !="ready":
-        # while True:
-                sendmsg = self.f.encrypt(sendmsg.encode())
-                self.transport.write(sendmsg,self.address)
+        while True:
+            if(stopapp == True):
+
+                break
                 
-            sendmsg = ""
-        time.sleep(2)
+                
+            print(sendmsg)
             
-def res():
-    del sys.modules["twisted.internet.reactor"]
-    from twisted.internet import reactor
-    from twisted.internet import default
-    default.install()
+            if sendmsg != "":
+                if sendmsg !="ready":
+            # while True:
+                    sendmsg = self.f.encrypt(sendmsg.encode())
+                    self.transport.write(sendmsg,self.address)
+                    
+                sendmsg = ""
+            time.sleep(2)
+            
+
 def refresh():
-    print("erysecond")
-    app.processEvents()
+    if(stopapp == False):
+        app.processEvents()
+        
+    else:
+        quit()
+        sys.exit()
+    # if(sendmsg =!)
+    #     reactor.callInThread(self.send_message)
 
 if __name__ == "__main__":
     port = 0
     msg = ""
     sendmsg = ""
+    stopapp = False
     online=False
     loadedChat = False
+    
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
     engine.load(os.fspath(Path(__file__).resolve().parent / "App.qml"))
