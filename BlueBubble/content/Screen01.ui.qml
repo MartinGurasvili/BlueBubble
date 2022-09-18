@@ -22,7 +22,7 @@ Rectangle {
 
     smooth: true
     visible: true
-    color: "#e65ee7df"
+    color: "#00c6ff"
     //color: "#00000000"
     radius: 30
     border.width: -1

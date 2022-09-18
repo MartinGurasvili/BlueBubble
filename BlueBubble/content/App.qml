@@ -2,8 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 import QtQuick.Layouts
-//import Qt5Compat.GraphicalEffects
-//import backend
+import backend
 
 
 Window {
@@ -37,77 +36,16 @@ Window {
     property bool inChat :false
     property bool online :false
     property var currentmsgs:ListModel{}
+    property var profilep : [ ]
     property var allcon:ListModel{
 
-
-        ListElement{
-            element: "spacer.qml"
-            name:"Blue Bubble"
-            c1:"#ffafbd"
-            c2:"#ffc3a0"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Maria"
-            c1:"#ffafbd"
-            c2:"#ffc3a0"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Jakub"
-            c1:"#2193b0"
-            c2:"#6dd5ed"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Joe"
-            c1:"#cc2b5e"
-            c2:"#753a88"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Ben"
-            c1:"#42275a"
-            c2:"#734b6d"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Jasmine"
-            c1:"#bdc3c7"
-            c2:"#2c3e50"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Brandon"
-            c1:"#56ab2f"
-            c2:"#a8e063"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Maks"
-            c1:"#eecda3"
-            c2:"#ef629f"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Seth"
-            c1:"#ffd89b"
-            c2:"#19547b"
-        }
-        ListElement{
-            element: " contact.qml"
-            name:"Add New User"
-            c1:"#ffd89b"
-            c2:"#19547b"
-        }
-
-
-
     }
+    property var cont:[]
+    property var contIndex:[]
 
-    //    Bridge {
-    //        id: bridge
-    //    }
+       Bridge {
+           id: bridge
+       }
     Item {
         id: login
         visible:true
@@ -135,6 +73,25 @@ Window {
             radius: 30
             border.width: -1
             Component.onCompleted: {
+                // bridge.saveListModel(allcon,"contacts.txt")
+                cont = bridge.LoadListModel("contacts.txt")
+                contIndex = bridge.contactIndex(cont)
+                console.log(contIndex)
+                // console.log(cont)
+                for(let i = contIndex[4]-1; i >= 0; i--)
+                {
+                    console.log(cont[i][contIndex[0]])
+                    console.log(cont[i][contIndex[1]])
+                    console.log(cont[i][contIndex[2]])
+                    console.log(cont[i][contIndex[3]])
+                    allcon.insert(0,{
+                                               element:cont[i][contIndex[0]],
+                                               name:cont[i][contIndex[1]],
+                                                c1:cont[i][contIndex[2]],
+                                                c2:cont[i][contIndex[3]]
+                                           })
+                }
+                
                 //name = bridge.load_user(name)
                 //console.log(name)
                 if(name !="")
@@ -145,6 +102,8 @@ Window {
                 }
                 
             }
+            
+
             gradient: Gradient {
                 orientation: Gradient.Vertical
                 GradientStop {
@@ -201,11 +160,11 @@ Window {
                 Keys.onPressed: {
                     if (event.key == Qt.Key_Return) {
                         if(name !=""){
+                            profilep = bridge.colorpicker([])
                             loaddd.color = "#ffffff"
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
-                            //bridge.message(name)
                             port =bridge.login(name)
                             console.log(port)
                         }}
@@ -430,7 +389,7 @@ Window {
                     
                     msg = bridge.checkmessage("")
                     if(msg !="" && msg !=pastmsg ){
-                        currentmsgs.insert(1,{
+                         currentmsgs.insert(1,{
                                                element: "BubbleIn.qml",
                                                name:msg
 
@@ -438,7 +397,7 @@ Window {
                         onlineind.color = "#00FF00"
                         online = true
                         pastmsg = msg
-                        msg = ""
+                         msg = ""
                     }
                     if(online == true){
                         onlineind.color = "#00FF00"
@@ -644,20 +603,20 @@ Window {
                 z:4
                 width: 53
                 height: 53
-                Text {
-                    color: "white"
-                    text: qsTr("<")
-                    x: 18
-                    y: 2
-                    width: 53
-                    height: 53
-                    font.family: "Rubik"
-                    font.pointSize: 38
-                    font.styleName: "Thin"
-
-                }
-                flat: true
-                highlighted: true
+                    Text {
+                        color: "white"
+                        text: qsTr("<")
+                        x: 18
+                        y: 2
+                        width: 53
+                        height: 53
+                        font.family: "Rubik"
+                        font.pointSize: 38
+                        font.styleName: "Thin"
+                       
+                    }
+                    flat: true   
+                    highlighted: true         
                 visible: false
                 
                 onPressed: {
@@ -667,7 +626,7 @@ Window {
                     inChat =false
                     online = false
                     onlineind.color = "#ff0000"
-                    bridge.exit_chat("")
+                     bridge.exit_chat("")
                 }
                 PropertyAnimation {
                     id:  backchani
@@ -765,7 +724,7 @@ Window {
                 font: textInput1.font
                 text: textInput1.text
             }
-
+           
 
             Keys.onPressed: {z
                 if (event.key == Qt.Key_Return) {
@@ -787,7 +746,7 @@ Window {
 
 
                 }
-            }
+                }
         }
 
 
@@ -879,9 +838,17 @@ Window {
             duration: 300
             running: false
             from: 1
+        }
+        PropertyAnimation {
+            id:  auviskill
+            target:addUser
+            property: "visible"
+            to: false
+            duration: 300
+            running: false
+            from: true
 
         }
-        
         property double prog:1.0
         Timer {
             interval: 1000; running: true; repeat: true
@@ -923,37 +890,6 @@ Window {
                     }
                 }
 
-
-                Button {
-                    id: backmain
-                    x: 8
-                    y: 23
-                    width: 53
-                    height: 53
-                    visible: true
-                    highlighted: true
-                    flat: true
-                    Text {
-                        x: 18
-                        y: 2
-                        width: 53
-                        height: 53
-                        visible: true
-                        color: "#ffffff"
-                        text: qsTr("<")
-                        layer.enabled: true
-                        font.family: "Rubik"
-                        font.pointSize: 38
-                        font.styleName: "Thin"
-                    }
-                    background: Rectangle {
-                        id: loadd2
-                        opacity: 0
-                        color: "#000000"
-                        radius: 30
-                    }
-                    z: 7
-                }
                 RoundButton {
                     id: roundButton2
                     x: 66
@@ -1037,7 +973,7 @@ Window {
                                 logout.running= true
                                 mainn.visible = true;
                                 mainanii.running= true
-                                //bridge.message(name)
+                                bridge.message(name)
                                 port =bridge.login(name)
                                 console.log(port)
                             }}
@@ -1068,12 +1004,12 @@ Window {
                     orientation: Gradient.Vertical
                     GradientStop {
                         position: 0
-                        color: "#30cfd0"
+                        color: profilep[0]
                     }
 
                     GradientStop {
                         position: 1
-                        color: "#330867"
+                        color: profilep[1]
                     }
                 }
             }
@@ -1172,8 +1108,48 @@ Window {
             }
         }
 
+        Button {
+            id: backmain
+            x: 8
+            y: 23
+            z: 7
+            width: 53
+            height: 53
+            highlighted: true
+            flat: true
+            onClicked: {
+                console.log("to list")
+                aufadeout.running = true
+                mainn.visible = true
+                mainanii.running = true
+                auviskill.running = true
+
+            }
+
+            Text {
+                x: 18
+                y: 2
+                z: 7
+                width: 53
+                height: 53
+                color: "#ffffff"
+                text: qsTr("<")
+                font.family: "Rubik"
+                font.pointSize: 38
+                font.styleName: "Thin"
+            }
+            background: Rectangle {
+                id: loadd2
+                opacity: 0
+                color: "#000000"
+                radius: 30
+            }
+
+        }
+
         Rectangle {
-            width: 500
+            x: 57
+            width: 443
             height: 100
             opacity: 0
             radius: 40
@@ -1198,6 +1174,7 @@ Window {
                 }
             }
         }
+
     }
 
     Item{
@@ -1369,7 +1346,6 @@ Window {
             height: 102
 
             Rectangle {
-                // anchors.fill: fastBlur
                 opacity:0.9
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
@@ -1391,22 +1367,7 @@ Window {
 
 
             }
-            // FastBlur {
-            //     id: fastBlur
-            //     x:0
-            //     y:0
-            //     height: 100
-
-            //     width: parent.width
-            //     radius: 27
-            //     opacity: 0.5
-
-            //     source: ShaderEffectSource {
-            //         sourceItem: flickable
-            //         sourceRect: Qt.rect(0, 0, fastBlur.width, fastBlur.height)
-            //     }
-            //     transparentBorder: true
-            // }
+            
 
             Button {
                 id: rectangle
@@ -1425,7 +1386,7 @@ Window {
                     viskill.running = true
                     addUser.visible = true
                     aufadein.running = true
-//                    mainn.visible = false
+                    //                    mainn.visible = false
                 }
             }
 
@@ -1458,12 +1419,12 @@ Window {
                     orientation: Gradient.Vertical
                     GradientStop {
                         position: 0
-                        color: "#30cfd0"
+                        color: profilep[0]
                     }
 
                     GradientStop {
                         position: 1
-                        color: "#330867"
+                        color: profilep[1]
                     }
                 }}
 
@@ -1589,7 +1550,6 @@ Window {
 /*##^##
 Designer {
     D{i:0;autoSize:true;formeditorZoom:1.1;height:480;width:640}D{i:3;invisible:true}
-D{i:107}
 }
 ##^##*/
 
