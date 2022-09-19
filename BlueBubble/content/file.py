@@ -46,6 +46,7 @@ class Bridge(QObject):
     @Slot(list, result=list)
     def colorpicker(self,a):
         return [colors[random.randint(0,len(colors))],colors[random.randint(0,len(colors))]]
+
     
     @Slot("QAbstractItemModel*", str)
     def saveListModel(self, model, filename):
@@ -77,6 +78,7 @@ class Bridge(QObject):
                 datagram = str(decrypted)[1:len(str(decrypted))]
                 datagram = datagram[1:len(str(datagram))-1]
                 data.append(str(datagram).split(","))
+        print(data)
         return data
        
     @Slot(list, result=list)
@@ -84,6 +86,13 @@ class Bridge(QObject):
         print(array)
         data = [int(array[0].index("element")),int(array[0].index("name")),int(array[0].index("c1")),int(array[0].index("c2")),len(array)]
         return data
+    
+    @Slot(list, result=list)
+    def messageIndex(self,array):
+        print(array)
+        data = [int(array[0].index("element")),int(array[0].index("name")),len(array)]
+        return data
+    
     @Slot(str, result=str)
     def load_user(self,b):
         try:

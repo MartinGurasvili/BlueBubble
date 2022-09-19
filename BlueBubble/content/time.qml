@@ -5,7 +5,7 @@ Item {
     height: 110
     x: 20
 
-    property string msg:  new Date().toLocaleString(Qt.locale()).substring(0,(Date().toLocaleString(Qt.locale()).length-20))
+    property string msg:"time"
 
     Rectangle {
         id: rectangle
