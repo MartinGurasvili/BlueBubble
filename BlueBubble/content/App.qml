@@ -76,14 +76,10 @@ Window {
                 // bridge.saveListModel(allcon,"contacts.txt")
                 cont = bridge.LoadListModel("contacts.txt")
                 contIndex = bridge.contactIndex(cont)
-                console.log(contIndex)
+                // console.log(contIndex)
                 // console.log(cont)
                 for(let i = contIndex[4]-1; i >= 0; i--)
                 {
-                    console.log(cont[i][contIndex[0]])
-                    console.log(cont[i][contIndex[1]])
-                    console.log(cont[i][contIndex[2]])
-                    console.log(cont[i][contIndex[3]])
                     allcon.insert(0,{
                                                element:cont[i][contIndex[0]],
                                                name:cont[i][contIndex[1]],
@@ -853,14 +849,18 @@ Window {
         Timer {
             interval: 1000; running: true; repeat: true
             onTriggered: {
-                var count = parseInt(countdown.text)
-                tform.xScale = count/30
-                countdown.text =  count - 1
-                if(count == 0){
-                    console.log("refresh")
-                    countdown.text = 30
-                    tform.xScale = 1.0
+                if(addUser.visible == true){
+                    var count = parseInt(countdown.text)
+                    tform.xScale = count/60
+                    countdown.text =  count - 1
+                    if(count == 0){
+                        console.log("refresh")
+                        uniId.text = bridge.gencode(name)
+                        countdown.text = 60
+                        tform.xScale = 1.0
+                    }
                 }
+                
 
             }}
 
@@ -941,7 +941,7 @@ Window {
                     width: 383
                     height: 41
                     color: "#ffffff"
-                    text: name
+                    text: ids
                     font.pixelSize: 30
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -969,13 +969,7 @@ Window {
                     Keys.onPressed: {
                         if (event.key == Qt.Key_Return) {
                             if(name !=""){
-                                loaddd.color = "#ffffff"
-                                logout.running= true
-                                mainn.visible = true;
-                                mainanii.running= true
-                                bridge.message(name)
-                                port =bridge.login(name)
-                                console.log(port)
+                                bridge.adduser(textInput2.text)
                             }}
                     }
                     font.styleName: "Light"
@@ -1021,7 +1015,7 @@ Window {
                 width: 364
                 height: 47
                 color: "#ffffff"
-                text: "MartinGur"
+                text: name
                 font.pixelSize: 40
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -1091,17 +1085,18 @@ Window {
             }
 
             TextEdit {
-                id: text5
-                x: 68
-                y: 493
-                width: 364
-                height: 94
+                id: uniId
+                x: 33
+                y: 500
+                width: 435
+                height: 99
                 readOnly: true
                 color: "#ffffff"
-                text: "safASFaghasfasgastsdgf"
-                font.pixelSize: 20
+                text: "ZPqAPESu_Q3brbmHhphR67htGIV9aDKBiEJFFC7eVuK7mCE5NQfM5wmcCtoP7fIBypF6nQWTnILaCKB--gCuiW8XsCVgYSwU_K0kjfZ8mwlu0"
+                font.pixelSize: 18
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+                wrapMode: Text.Wrap
                 font.family: ff
                 font.styleName: "Light"
                 selectByMouse: true
@@ -1382,6 +1377,8 @@ Window {
 
                 onClicked: {
                     console.log("tousers")
+                    uniId.text = bridge.gencode(name)
+                    countdown.text = 60
                     mainani.running = true
                     viskill.running = true
                     addUser.visible = true
@@ -1547,10 +1544,12 @@ Window {
 
 
 
+
+
+
+
 /*##^##
 Designer {
-    D{i:0;autoSize:true;formeditorZoom:1.1;height:480;width:640}D{i:3;invisible:true}
+    D{i:0;autoSize:true;height:480;width:640}
 }
 ##^##*/
-
-

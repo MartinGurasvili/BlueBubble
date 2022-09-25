@@ -1,6 +1,8 @@
+import code
 import os
 import numpy as np
 from pathlib import Path
+import socket
 from socket import MsgFlag
 import sys
 import random
@@ -99,6 +101,8 @@ class Bridge(QObject):
             return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),dtype=str))
         except:
             return ""
+
+    
         
     @Slot(str, result=str)
     def exit_chat(self,b):
@@ -118,7 +122,7 @@ class Bridge(QObject):
             print("server already made")
             online = True
         
-        thread1 = threading.Thread(target=reactor.listenUDP(port,Client("localhost",port,"")))
+        thread1 = threading.Thread(target=reactor.listenUDP(port,Client(ip_ad,port,"")))
         thread1.start()
         time.sleep(1)
         loadedChat = True
@@ -126,11 +130,38 @@ class Bridge(QObject):
         
         loop = task.LoopingCall(refresh)
 
-            # Start looping every 1 second.
+            # Start looping every 4 millisecond.
         loopDeferred = loop.start(0.004)
         
         reactor.run()
-               
+    @Slot(str, result=str)
+    def gencode(self,username):
+        global port
+        port =str(random.randint(11111,65534))
+        portlist = ports()
+        print(portlist)
+        while port in portlist:
+            port =str(random.randint(11111,65534))
+        code = str(ip_ad+","+port+","+username)
+        print(code)
+        addr = f.encrypt(code.encode())
+        code = addr[10:-1]
+        code = str(code)[2:-1]
+        print(code)
+        return code
+    
+    @Slot(str, result=str)
+    def adduser(self,id):
+        global port
+        arr = ports()
+        arr[len(arr)-1] =","+port+","
+        print(str(arr))
+        savetoports(str(arr))
+        #needs to save own port number 
+        #open messaging window
+        #save contact and decrypt id
+        pass
+
         
     
     @Slot(str, result=str)
@@ -183,7 +214,7 @@ class Client(DatagramProtocol):
         self.f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
         self.id = host,port
         self.address = None
-        self.server = "127.0.0.1",9999
+        self.server = host,9999
         
         
 
@@ -238,6 +269,17 @@ class Client(DatagramProtocol):
                 sendmsg = ""
             time.sleep(2)
             
+def ports():
+        try:
+            return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "ports.txt")),dtype=str)).split(",")
+        except:
+            return ""     
+def savetoports(savee):
+        # try:
+        print(np.array(savee))
+        np.savetxt(os.fspath(Path(__file__).resolve().parent / "ports.txt"),np.array([savee]),fmt = '%s')
+        # except:
+        #     return ""     
 
 def refresh():
     if(stopapp == False):
@@ -258,6 +300,11 @@ if __name__ == "__main__":
     online=False
     loadedChat = False
     f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
+    print("   ")
+    print(socket.gethostbyname(socket.gethostname()))
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    ip_ad = s.getsockname()[0]
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
     engine.load(os.fspath(Path(__file__).resolve().parent / "App.qml"))
