@@ -9,28 +9,24 @@ Item {
     property string msg:amazon
     property color c1:"#2af598"
     property color c2:"#009efd"
+    property var time:(new Date().toLocaleString(Qt.locale()).split(/[, ]+/))
     property var temp:ListModel{
                            id: mod
                            ListElement{
                                element: "bspacer.qml"
                                name:" "
                                }
-                        //     ListElement{
-                        //        element: "BubbleIn.qml"
-                        //        name:"h"
-                        //    }
-                           
+                        
                            ListElement{
                                element: "time.qml"
                                name:""
                                }
-                            ListElement{
-                               element: "bspacer.qml"
-                               name:" "
-                               }
+                            
                            
                            
                            }
+    property var msgIndex:[]
+    property var cont:[]
     MouseArea
     {
         width: parent.width
@@ -38,7 +34,27 @@ Item {
 //        onPressAndHold:console.log("darg")
 
         onClicked: {
-            
+            time = time[0]+" "+time[1]
+            currentchat = msg
+            if(temp.count == 2){
+                console.log(time)
+                temp.setProperty(1, "name", time);
+                cont = bridge.LoadListModel(msg)
+                if (cont[0] != -1 ){
+                    bridge.saveListModel(temp, msg)
+                    msgIndex = bridge.messageIndex(cont)
+                    if(msgIndex[2]-1 >2)
+                    {
+                        for(let i = msgIndex[2]-1; i >=2 ; i--)
+                        {
+                            temp.insert(2,{
+                                                    element:cont[i][msgIndex[0]],
+                                                    name:cont[i][msgIndex[1]],
+                                                })
+                        }
+                    }
+                }
+            }
             inChat =true
             mainani2.running= true
             //mainani.running= true
@@ -74,18 +90,18 @@ Item {
                 currentmsgs = temp
             }
 
-            for(var y = 0;y<allcon.count;y++)
+            for(var y = 1;y<allcon.count;y++)
             {
 
                 if(allcon.get(y).name.toString()==text3.text)
                 {
 
-                    allcon.move(y,1,1)
+                    allcon.move(y,2,1)
                 }
             }
 
 
-            bridge.message(port)
+            bridge.message([ip,port,uport])
         }
     }
     Rectangle {

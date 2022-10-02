@@ -1,4 +1,3 @@
-import code
 import os
 import numpy as np
 from pathlib import Path
@@ -28,22 +27,13 @@ from twisted.internet import task
 
 QML_IMPORT_NAME = "backend"
 QML_IMPORT_MAJOR_VERSION = 1
-# print(sys.modules)
 @QmlElement
 class Bridge(QObject):
     @Slot(str, result=str)
     def login(self,a):
         
-        if int(a) == 2:
-            port = "12345"
-            name = "Jakub"
-            
-        else:
-            port ="12354"
-            name = "Martin"
         return port
-        # np.savetxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),np.array([str(a)]),fmt = '%s')
-        # print("wag1")
+        
         
     @Slot(list, result=list)
     def colorpicker(self,a):
@@ -71,22 +61,27 @@ class Bridge(QObject):
     @Slot(str, result=list)
     def LoadListModel(self,filename):
         global f
-        data = []
-        with open((os.fspath(Path(__file__).resolve().parent / filename))) as b:
-            for line in b:
-                # print(bytes(line[:len(str(line))-3],'utf-8'))
-                decrypted =f.decrypt(bytes(line,'utf-8'))
-                # print(decrypted)
-                datagram = str(decrypted)[1:len(str(decrypted))]
-                datagram = datagram[1:len(str(datagram))-1]
-                data.append(str(datagram).split(","))
-        print(data)
-        return data
+        if ((Path(__file__).resolve().parent / filename).exists()):
+            data = []
+            with open((os.fspath(Path(__file__).resolve().parent / filename))) as b:
+                for line in b:
+                    # print(bytes(line[:len(str(line))-3],'utf-8'))
+                    decrypted =f.decrypt(bytes(line,'utf-8'))
+                    # print(decrypted)
+                    datagram = str(decrypted)[1:len(str(decrypted))]
+                    datagram = datagram[1:len(str(datagram))-1]
+                    data.append(str(datagram).split(","))
+            print(data)
+            return data
+        else:
+            return [-1]
+        
+
        
     @Slot(list, result=list)
     def contactIndex(self,array):
         print(array)
-        data = [int(array[0].index("element")),int(array[0].index("name")),int(array[0].index("c1")),int(array[0].index("c2")),len(array)]
+        data = [int(array[0].index("element")),int(array[0].index("name")),int(array[0].index("c1")),int(array[0].index("c2")),int(array[0].index("ip")),int(array[0].index("port")),int(array[0].index("uport")),len(array)]
         return data
     
     @Slot(list, result=list)
@@ -111,26 +106,25 @@ class Bridge(QObject):
         
     @Slot(str, result=str)
     def message(self,a):
-        global port,online,loadedChat,loop
-        port = int(a)
+        global port,online,loadedChat,loop,ip,uport
+        print(a)
+        a = a.split(",")
+        port = int(a[1])
+        ip = str(a[0])
+        uport =int(a[2])
         try:
             reactor.listenUDP(9999,Server())
             print("started server")
-            
-        # reactor.run()
         except:
             print("server already made")
             online = True
         
-        thread1 = threading.Thread(target=reactor.listenUDP(port,Client(ip_ad,port,"")))
+        thread1 = threading.Thread(target=reactor.listenUDP(port,Client(ip,port,"")))
         thread1.start()
         time.sleep(1)
         loadedChat = True
         app.processEvents()
-        
         loop = task.LoopingCall(refresh)
-
-            # Start looping every 4 millisecond.
         loopDeferred = loop.start(0.004)
         
         reactor.run()
@@ -145,22 +139,29 @@ class Bridge(QObject):
         code = str(ip_ad+","+port+","+username)
         print(code)
         addr = f.encrypt(code.encode())
-        code = addr[10:-1]
+        print(addr)
+        code = addr[8:-1]
         code = str(code)[2:-1]
         print(code)
         return code
     
-    @Slot(str, result=str)
+    @Slot(str, result=list)
     def adduser(self,id):
         global port
         arr = ports()
-        arr[len(arr)-1] =","+port+","
-        print(str(arr))
-        savetoports(str(arr))
-        #needs to save own port number 
+        arr.append(port)
+        print(arr)
+        savetoports(arr)
+        print(id)
+        decrypted = f.decrypt(bytes("gAAAAABj"+str(id)+"=", 'utf-8'))
+        mainf = str(decrypted)[1:len(str(decrypted))]
+        print(mainf)
+        mainf = mainf[1:len(str(mainf))-1].split(",")
+        print(mainf)
         #open messaging window
         #save contact and decrypt id
-        pass
+        col = internalcolorpicker()
+        return [" contact.qml",mainf[2],col[0],col[1],mainf[0],mainf[1],port]
 
         
     
@@ -189,7 +190,8 @@ class Bridge(QObject):
         print("done")
         
     
-
+def internalcolorpicker():
+        return [colors[random.randint(0,len(colors))],colors[random.randint(0,len(colors))]]
 
 
 class Server(DatagramProtocol):
@@ -213,6 +215,8 @@ class Client(DatagramProtocol):
         self.h = host
         self.f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
         self.id = host,port
+        self.p = port
+        self.up = uport
         self.address = None
         self.server = host,9999
         
@@ -233,11 +237,7 @@ class Client(DatagramProtocol):
         # app.processEvents()
         print("hppening")
         if addr ==self.server:
-           
-            if(port ==12345):
-                self.address = self.h,12354
-            else:
-                self.address = self.h,12345
+            self.address = self.h,self.up
         else:
             try:
                 decrypted = self.f.decrypt(datagram)
@@ -256,13 +256,9 @@ class Client(DatagramProtocol):
             if(stopapp == True):
 
                 break
-                
-                
             print(sendmsg)
-            
             if sendmsg != "":
                 if sendmsg !="ready":
-            # while True:
                     sendmsg = self.f.encrypt(sendmsg.encode())
                     self.transport.write(sendmsg,self.address)
                     
@@ -270,30 +266,34 @@ class Client(DatagramProtocol):
             time.sleep(2)
             
 def ports():
-        try:
-            return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "ports.txt")),dtype=str)).split(",")
-        except:
-            return ""     
+    data = []
+    with open((os.fspath(Path(__file__).resolve().parent / "ports.txt"))) as b:
+        for line in b:
+            decrypted =f.decrypt(bytes(line,'utf-8'))
+            if(len(str(decrypted)) !=5):
+                print(str(decrypted)[2:len(str(decrypted))-1])
+                data.append(str(decrypted)[2:len(str(decrypted))-1])
+            else:
+                data.append(str(decrypted)[1:len(str(decrypted))])
+    return data
+       
 def savetoports(savee):
-        # try:
-        print(np.array(savee))
-        np.savetxt(os.fspath(Path(__file__).resolve().parent / "ports.txt"),np.array([savee]),fmt = '%s')
-        # except:
-        #     return ""     
-
+    with open((os.fspath(Path(__file__).resolve().parent / "ports.txt")), 'w') as b:
+        for x in savee:
+            x = f.encrypt(str(x)[0:len(str(x))].encode())
+            b.write(str(x)[1:len(str(x))]+"\n")
 def refresh():
     if(stopapp == False):
         app.processEvents()
-        
     else:
         quit()
         sys.exit()
-    # if(sendmsg =!)
-    #     reactor.callInThread(self.send_message)
 
 if __name__ == "__main__":
     colors = ["#ffafbd","#ffc3a0","#2193b0","#753a88","#cc2b5e","#ee9ca7","#ffdde1","#42275a","#734b6d","#2c3e50","#bdc3c7","#de6262","#ffb88c","#dd5e89","#56ab2f","#a8e063","#614385","#516395","#ef629f","#00cdac","#02aab0","#000428","#004e92","#ddd6f3","#faaca8","#61045f","#aa076b"]
     port = 0
+    uport = 0
+    ip = ""
     msg = ""
     sendmsg = ""
     stopapp = False

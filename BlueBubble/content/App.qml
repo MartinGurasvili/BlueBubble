@@ -26,20 +26,18 @@ Window {
     property string fv:"Rounded Sans Serifs"
     property string ff:'Helvetica Neue'
     property string fq:'Manrope Thin'
-    //FontLoader { id: webFont; source: "https://fonts.google.com/specimen/Nunito" }
     property var sprite
     property var component;
     property string msg;
     property string pastmsg;
+    property var aduserdata :[]
     property var allmsgs : [ ]
-    property string port
     property bool inChat :false
     property bool online :false
     property var currentmsgs:ListModel{}
     property var profilep : [ ]
-    property var allcon:ListModel{
-
-    }
+    property string currentchat:""
+    property var allcon:ListModel{}
     property var cont:[]
     property var contIndex:[]
 
@@ -73,23 +71,20 @@ Window {
             radius: 30
             border.width: -1
             Component.onCompleted: {
-                // bridge.saveListModel(allcon,"contacts.txt")
                 cont = bridge.LoadListModel("contacts.txt")
                 contIndex = bridge.contactIndex(cont)
-                // console.log(contIndex)
-                // console.log(cont)
-                for(let i = contIndex[4]-1; i >= 0; i--)
+                for(let i = contIndex[7]-1; i >= 0; i--)
                 {
                     allcon.insert(0,{
                                                element:cont[i][contIndex[0]],
                                                name:cont[i][contIndex[1]],
                                                 c1:cont[i][contIndex[2]],
-                                                c2:cont[i][contIndex[3]]
+                                                c2:cont[i][contIndex[3]],
+                                                ip:cont[i][contIndex[4]],
+                                                port:cont[i][contIndex[5]],
+                                                uport:cont[i][contIndex[6]]
                                            })
                 }
-                
-                //name = bridge.load_user(name)
-                //console.log(name)
                 if(name !="")
                 {
                     login.visible = false;
@@ -162,7 +157,6 @@ Window {
                             mainn.visible = true;
                             mainanii.running= true
                             port =bridge.login(name)
-                            console.log(port)
                         }}
                 }
                 MouseArea {
@@ -291,17 +285,13 @@ Window {
                 }
                 onClicked: {
                     if(name !=""){
-                        loaddd.color = "#ffffff"
-                        logout.running= true
-                        mainn.visible = true;
-                        mainanii.running= true
-                        bridge.login(name)
-                    }
-
-
-
-
-                    //login.visible = false;
+                            profilep = bridge.colorpicker([])
+                            loaddd.color = "#ffffff"
+                            logout.running= true
+                            mainn.visible = true;
+                            mainanii.running= true
+                            port =bridge.login(name)
+                        }}
 
                 }
             }
@@ -381,8 +371,6 @@ Window {
             onTriggered: {
                 if(inChat ==true)
                 {
-                    // console.log("in chat")
-                    
                     msg = bridge.checkmessage("")
                     if(msg !="" && msg !=pastmsg ){
                          currentmsgs.insert(1,{
@@ -401,7 +389,6 @@ Window {
                     
                 }
                 else{
-                    console.log("not in chat")
                     pastmsg = ""
                     msg = ""
                 }
@@ -458,9 +445,7 @@ Window {
                 height: 800
                 visible: true
                 synchronousDrag: false
-                //visible: true
                 boundsMovement: Flickable.FollowBoundsBehavior
-                //synchronousDrag: false
                 boundsBehavior: Flickable.DragAndOvershootBounds
                 flickableDirection: Flickable.VerticalFlick
 
@@ -514,7 +499,6 @@ Window {
                 width: 500
                 height: 100
                 radius: 30
-                // anchors.fill: fastBlur1
                 opacity:0.9
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
@@ -530,18 +514,7 @@ Window {
                 }
             }
 
-            // FastBlur {
-            //     id: fastBlur1
-            //     width: 500
-            //     height: 100
-            //     opacity: 0.55
-            //     radius: 27
-            //     source: ShaderEffectSource {
-            //         sourceItem: blurgrid
-            //         sourceRect: Qt.rect(0, 0, fastBlur1.width, fastBlur1.height)
-            //     }
-            //     transparentBorder: true
-            // }
+
 
 
             Rectangle {
@@ -622,6 +595,7 @@ Window {
                     inChat =false
                     online = false
                     onlineind.color = "#ff0000"
+                    bridge.saveListModel(currentmsgs, currentchat)
                      bridge.exit_chat("")
                 }
                 PropertyAnimation {
@@ -677,25 +651,10 @@ Window {
                 }
             }
             radius: 20
-            // anchors.fill: fastBlur2
         }
 
 
-
-        // FastBlur {
-        //     id: fastBlur2
-        //     x: 10
-        //     y: 700
-        //     width: 480
-        //     height: 90
-        //     opacity: 0.55
-        //     radius: 27
-        //     source: ShaderEffectSource {
-        //         sourceItem: blurgrid
-        //         sourceRect: Qt.rect(10,700, fastBlur2.width, fastBlur2.height)
-        //     }
-        //     transparentBorder: true
-        // }
+        
         TextInput {
             id: textInput1
             x: 20
@@ -734,13 +693,8 @@ Window {
 
                     }
 
-                    //allmsg = mod
-                    
                     textInput1.text = ""
                     
-
-
-
                 }
                 }
         }
@@ -770,16 +724,11 @@ Window {
                                                name:textInput1.text
 
                                            })
-
+                        bridge.sendmessage(textInput1.text)
 
                     }
 
-                    //allmsg[][] = mod
-
                     textInput1.text = ""
-
-
-
                 }}
         }
 
@@ -854,7 +803,6 @@ Window {
                     tform.xScale = count/60
                     countdown.text =  count - 1
                     if(count == 0){
-                        console.log("refresh")
                         uniId.text = bridge.gencode(name)
                         countdown.text = 60
                         tform.xScale = 1.0
@@ -937,18 +885,17 @@ Window {
                 TextInput {
                     id: textInput2
                     x: 59
-                    y: 618
+                    y: 620
                     width: 383
                     height: 41
                     color: "#ffffff"
                     text: ids
-                    font.pixelSize: 30
+                    font.pixelSize: 13
+                    wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     font.family: ff
-                    onTextChanged: {
-                        name = text
-                    }
+                    
 
                     MouseArea {
                         id: ma1
@@ -968,8 +915,23 @@ Window {
                     }
                     Keys.onPressed: {
                         if (event.key == Qt.Key_Return) {
-                            if(name !=""){
-                                bridge.adduser(textInput2.text)
+                            if(textInput2.text !=""){
+                                aduserdata = bridge.adduser(textInput2.text)
+                                allcon.insert(2,{
+                                               element:aduserdata[0],
+                                               name:aduserdata[1],
+                                                c1:aduserdata[2],
+                                                c2:aduserdata[3],
+                                                ip:aduserdata[4],
+                                                port:aduserdata[5],
+                                                uport:aduserdata[6]
+                                           })
+                                textInput2.text = ""
+                                bridge.saveListModel(allcon,"contacts.txt")
+                                aufadeout.running = true
+                                mainn.visible = true
+                                mainanii.running = true
+                                auviskill.running = true
                             }}
                     }
                     font.styleName: "Light"
@@ -1113,7 +1075,6 @@ Window {
             highlighted: true
             flat: true
             onClicked: {
-                console.log("to list")
                 aufadeout.running = true
                 mainn.visible = true
                 mainanii.running = true
@@ -1376,14 +1337,14 @@ Window {
                 clip: true
 
                 onClicked: {
-                    console.log("tousers")
+    
                     uniId.text = bridge.gencode(name)
                     countdown.text = 60
                     mainani.running = true
                     viskill.running = true
                     addUser.visible = true
                     aufadein.running = true
-                    //                    mainn.visible = false
+    
                 }
             }
 
@@ -1428,15 +1389,6 @@ Window {
 
         }
 
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -1463,8 +1415,6 @@ Window {
         layer.enabled: false
         layer.format: ShaderEffectSource.RGBA
         focusPolicy: Qt.ClickFocus
-        //spacing: 9
-        //display: AbstractButton.IconOnly
         clip: false
         highlighted: false
         flat: false
@@ -1502,7 +1452,6 @@ Window {
             font.pointSize: 12
             font.family: "Rubik"
 
-            //anchors.verticalCenter: parent.verticalCenter
             x:6
             y:3
 
@@ -1542,14 +1491,3 @@ Window {
 
 }
 
-
-
-
-
-
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
