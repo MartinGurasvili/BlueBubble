@@ -23,10 +23,12 @@ QML_IMPORT_NAME = "backend"
 QML_IMPORT_MAJOR_VERSION = 1
 @QmlElement
 class Bridge(QObject):
-    @Slot(str, result=str)
+    @Slot(list, result=str)
     def login(self,a):
+        with open((os.fspath(Path(__file__).resolve().parent / "user.txt")), 'w') as b:
+            for x in a:
+                b.write(x+"\n")
         
-        return port
         
         
     @Slot(list, result=list)
@@ -84,12 +86,18 @@ class Bridge(QObject):
         data = [int(array[0].index("element")),int(array[0].index("name")),len(array)]
         return data
     
-    @Slot(str, result=str)
+    @Slot(str, result=list)
     def load_user(self,b):
         # try:
-        #     return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),dtype=str))
+        data = []
+        with open((os.fspath(Path(__file__).resolve().parent / "user.txt"))) as b:
+            for x in b:
+                data.append(x[:-1])
+        
+        return data
+    
         # except:
-        return ""
+        #     return ""
 
     
         

@@ -35,11 +35,12 @@ Window {
     property bool inChat :false
     property bool online :false
     property var currentmsgs:ListModel{}
-    property var profilep : [ ]
+    property var profilep : []
     property string currentchat:""
     property var allcon:ListModel{}
     property var cont:[]
     property var contIndex:[]
+    property var ben:[]
 
        Bridge {
            id: bridge
@@ -85,6 +86,11 @@ Window {
                                                 uport:cont[i][contIndex[6]]
                                            })
                 }
+                ben = bridge.load_user("")
+                console.log(ben[1])
+                name = ben[0]
+                profilep = [ben[1].toString(),ben[2].toString()]
+                print(profilep[0])
                 if(name !="")
                 {
                     login.visible = false;
@@ -156,7 +162,7 @@ Window {
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
-                            port =bridge.login(name)
+                            bridge.login([name,profilep[0],profilep[1]])
                         }}
                 }
                 MouseArea {
@@ -290,7 +296,7 @@ Window {
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
-                            port =bridge.login(name)
+                            bridge.login([name,profilep[0],profilep[1]])
                         }}
 
                 }
