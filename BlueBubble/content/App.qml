@@ -360,7 +360,7 @@ Window {
                 }
                 z: 2
             }
-        }}
+        }
 
     Item {
         id: chatt

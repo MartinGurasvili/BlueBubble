@@ -1,20 +1,14 @@
 import os
-import numpy as np
 from pathlib import Path
 import socket
 from socket import MsgFlag
 import sys
 import random
 import threading
-import PyQt6
-# from PySide6.Qt5Compat import QtGraphicalEffects
 from PySide6.QtGui import QGuiApplication
-from PySide6.QtWidgets import QApplication
-from PySide6.QtQuick import QQuickView
 from PySide6.QtQml import QQmlApplicationEngine , QmlElement
 from PySide6.QtCore import QObject, Slot
 from cryptography.fernet import Fernet
-from re import T
 from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from cryptography.fernet import Fernet
@@ -92,10 +86,10 @@ class Bridge(QObject):
     
     @Slot(str, result=str)
     def load_user(self,b):
-        try:
-            return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),dtype=str))
-        except:
-            return ""
+        # try:
+        #     return str(np.loadtxt((os.fspath(Path(__file__).resolve().parent / "user.txt")),dtype=str))
+        # except:
+        return ""
 
     
         
