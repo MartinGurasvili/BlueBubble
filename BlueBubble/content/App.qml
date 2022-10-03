@@ -7,8 +7,8 @@ import backend
 Window {
     id: mainWindow
     minimumWidth: 300
-    minimumHeight: 480
-    height:800
+    minimumHeight: mainWindow.width*1.6
+    height:mainWindow.width*1.6
     width:500
     maximumWidth: 800
     maximumHeight: 1280
@@ -1226,7 +1226,7 @@ Window {
             target:mainn
             property: "x"
             to: -1000
-            duration: 300
+            duration: (300/mainWindow.width)*400
             running: false
             from:0
 
@@ -1236,7 +1236,7 @@ Window {
             target:mainn
             property: "x"
             to: 0
-            duration: 300
+            duration: (300/mainWindow.width)*400
             running: false
             from:-1000
 
