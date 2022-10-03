@@ -4,18 +4,18 @@ import QtQuick.Window
 import QtQuick.Layouts
 import backend
 
-
 Window {
     id: mainWindow
-    minimumWidth: 500
-    minimumHeight: 800
-    maximumWidth: 500
-    maximumHeight: 700
-
-    flags: Qt.Window | Qt.FramelessWindowHint |Qt.WindowStaysOnTopHint
+    minimumWidth: 300
+    minimumHeight: 480
+    height:800
+    width:500
+    maximumWidth: 800
+    maximumHeight: 1280
+    
+    flags: Qt.Window | Qt.FramelessWindowHint
     visible: true
     color: "#00000000"
-
     title: "BlueBubble"
     property int previousX
     property int previousY
@@ -48,6 +48,7 @@ Window {
     Item {
         id: login
         visible:true
+        transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
 
         PropertyAnimation {
             id: logout
@@ -353,6 +354,7 @@ Window {
                     onMouseXChanged: {
                         var dx = mouseX - previousX
                         mainWindow.setX(mainWindow.x + dx)
+                        
                     }
                     onPressed: {
                         previousX = mouseX
@@ -372,6 +374,7 @@ Window {
         id: chatt
         opacity: 1
         visible: false
+        transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
         Timer {
             interval: 1000; running: true; repeat: true
             onTriggered: {
@@ -384,6 +387,7 @@ Window {
                                                name:msg
 
                                            })
+                        bridge.notif(messaging,msg)
                         onlineind.color = "#00FF00"
                         online = true
                         pastmsg = msg
@@ -395,7 +399,7 @@ Window {
                     
                 }
                 else{
-                    pastmsg = ""
+                    //pastmsg = ""
                     msg = ""
                 }
             }
@@ -772,6 +776,7 @@ Window {
         id: addUser
         opacity: 1
         visible: false
+        transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
         PropertyAnimation {
             id:  aufadein
             target:Rectangle
@@ -806,11 +811,11 @@ Window {
             onTriggered: {
                 if(addUser.visible == true){
                     var count = parseInt(countdown.text)
-                    tform.xScale = count/60
+                    tform.xScale = count/120
                     countdown.text =  count - 1
                     if(count == 0){
                         uniId.text = bridge.gencode(name)
-                        countdown.text = 60
+                        countdown.text = 120
                         tform.xScale = 1.0
                     }
                 }
@@ -864,6 +869,37 @@ Window {
                         opacity: bu1.op
                         color: bu1.wl
                         radius: 30
+                    }
+                    onClicked:{
+                        if(textInput2.text !=""){
+                                aduserdata = bridge.adduser(textInput2.text)
+                                var count = 0
+                                 
+                                while(true){
+                                    if(allcon.get(count).element.toString()=="spacer.qml")
+                                    {
+                                        break
+                                    }
+                                count+=1
+                                }
+                            
+                                bridge.notif("Added User",aduserdata[1])
+                                allcon.insert(count+1,{
+                                               element:aduserdata[0],
+                                               name:aduserdata[1],
+                                                c1:aduserdata[2],
+                                                c2:aduserdata[3],
+                                                ip:aduserdata[4],
+                                                port:aduserdata[5],
+                                                uport:aduserdata[6]
+                                           })
+                                textInput2.text = ""
+                                bridge.saveListModel(allcon,"contacts.txt")
+                                aufadeout.running = true
+                                mainn.visible = true
+                                mainanii.running = true
+                                auviskill.running = true
+                            }
                     }
                     font.pointSize: 30
                     font.weight: Font.Light
@@ -923,6 +959,16 @@ Window {
                         if (event.key == Qt.Key_Return) {
                             if(textInput2.text !=""){
                                 aduserdata = bridge.adduser(textInput2.text)
+                                bridge.notif("Added User",aduserdata[1])
+                                var count = 0
+                                 
+                                while(true){
+                                    if(allcon.get(count).element.toString()=="spacer.qml")
+                                    {
+                                        break
+                                    }
+                                count+=1
+                                }
                                 allcon.insert(2,{
                                                element:aduserdata[0],
                                                name:aduserdata[1],
@@ -1143,7 +1189,7 @@ Window {
         id:mainn
         opacity: 1
         visible: false
-
+        transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
 
 
         PropertyAnimation {
@@ -1179,7 +1225,7 @@ Window {
             id:  mainani2
             target:mainn
             property: "x"
-            to: -500
+            to: -1000
             duration: 300
             running: false
             from:0
@@ -1192,7 +1238,7 @@ Window {
             to: 0
             duration: 300
             running: false
-            from:-500
+            from:-1000
 
         }
         Rectangle {
@@ -1214,7 +1260,7 @@ Window {
             id: item4
             width: 0
             height: 0
-
+            
 
 
             Flickable {
@@ -1397,7 +1443,8 @@ Window {
 
     }
 
-
+    Item{
+        transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
     RoundButton {
         id: exit
         x: 434
@@ -1407,6 +1454,7 @@ Window {
         height: 20
         visible: true
         radius: 60
+        
         Text {
             color: "white"
             text: "—"
@@ -1490,10 +1538,12 @@ Window {
         }
 
     }
-
+    }
+    
 
 
 
 
 }
+
 

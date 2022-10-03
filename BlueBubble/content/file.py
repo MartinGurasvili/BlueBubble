@@ -5,7 +5,7 @@ from socket import MsgFlag
 import sys
 import random
 import threading
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtGui import QGuiApplication,QAction
 from PySide6.QtQml import QQmlApplicationEngine , QmlElement
 from PySide6.QtCore import QObject, Slot
 from cryptography.fernet import Fernet
@@ -17,10 +17,11 @@ import time
 from twisted.internet.protocol import DatagramProtocol
 from twisted.internet import reactor
 from twisted.internet import task
-
-
+import pync
+# from win10toast import ToastNotifier
 QML_IMPORT_NAME = "backend"
 QML_IMPORT_MAJOR_VERSION = 1
+
 @QmlElement
 class Bridge(QObject):
     @Slot(list, result=str)
@@ -88,16 +89,13 @@ class Bridge(QObject):
     
     @Slot(str, result=list)
     def load_user(self,b):
-        # try:
         data = []
         with open((os.fspath(Path(__file__).resolve().parent / "user.txt"))) as b:
             for x in b:
                 data.append(x[:-1])
         
         return data
-    
-        # except:
-        #     return ""
+
 
     
         
@@ -116,9 +114,9 @@ class Bridge(QObject):
         uport =int(a[2])
         try:
             reactor.listenUDP(9999,Server())
-            print("started server")
+            # print("started server")
         except:
-            print("server already made")
+            # print("server already made")
             online = True
         
         thread1 = threading.Thread(target=reactor.listenUDP(port,Client(ip,port,"")))
@@ -139,14 +137,20 @@ class Bridge(QObject):
         while port in portlist:
             port =str(random.randint(11111,65534))
         code = str(ip_ad+","+port+","+username)
-        print(code)
         addr = f.encrypt(code.encode())
-        print(addr)
         code = addr[8:-1]
         code = str(code)[2:-1]
-        print(code)
+        while True:
+            try:
+                f.decrypt(bytes(("gAAAAABj"+str(code)+"="), 'utf-8'))
+                break
+            except:
+                addr = f.encrypt(code.encode())
+                code = addr[8:-1]
+                code = str(code)[2:-1]
+        
         return code
-    
+            
     @Slot(str, result=list)
     def adduser(self,id):
         global port
@@ -160,8 +164,6 @@ class Bridge(QObject):
         print(mainf)
         mainf = mainf[1:len(str(mainf))-1].split(",")
         print(mainf)
-        #open messaging window
-        #save contact and decrypt id
         col = internalcolorpicker()
         return [" contact.qml",mainf[2],col[0],col[1],mainf[0],mainf[1],port]
 
@@ -183,15 +185,26 @@ class Bridge(QObject):
     def quit(self,a):
         global stopapp
         stopapp = True
-        loop.stop()
-        reactor.stop()
-        print("done")
-        app.processEvents()
-        quit()
-        exit()
-        print("done")
+        try:
+            loop.stop()
+            reactor.stop()
+        except:
+
+            app.processEvents()
+    @Slot(str,str,result=str)
+    def notif(self,titl,messag):
+        pync.notify(
+        title = titl,
+        message = messag,
+        app_icon = (os.fspath(Path(__file__).resolve().parent / "images/bb.png")),
+        timeout = 10
+        )
+        # toaster = ToastNotifier()
+        # toaster.show_toast(titl,
+        #            messag,
+        #            icon_path=(os.fspath(Path(__file__).resolve().parent / "bb.png")),
+        #            duration=10)
         
-    
 def internalcolorpicker():
         return [colors[random.randint(0,len(colors))],colors[random.randint(0,len(colors))]]
 
@@ -222,32 +235,25 @@ class Client(DatagramProtocol):
         self.address = None
         self.server = host,9999
         
+    
         
 
     def startProtocol(self):
-        print("Working on id:",self.id)
+        # print("Working on id:",self.id)
         time.sleep(1)
-        
         self.transport.write("ready".encode('utf-8'),self.server)
         reactor.callInThread(self.send_message)
-        # reactor.callInThread(self.ref)
 
     def datagramReceived(self,datagram,addr):
         global msg
-        # reactor.callInThread(app.processEvents)
-        
-        # app.processEvents()
-        print("hppening")
         if addr ==self.server:
             self.address = self.h,self.up
         else:
             try:
                 decrypted = self.f.decrypt(datagram)
                 datagram = str(decrypted)[1:len(str(decrypted))]
-                print(datagram)
                 msg = datagram[1:-1]
             except:
-                print(datagram)
                 msg = datagram
 
         
@@ -256,9 +262,8 @@ class Client(DatagramProtocol):
         global sendmsg
         while True:
             if(stopapp == True):
-
                 break
-            print(sendmsg)
+            # print(sendmsg)
             if sendmsg != "":
                 if sendmsg !="ready":
                     sendmsg = self.f.encrypt(sendmsg.encode())
@@ -284,6 +289,7 @@ def savetoports(savee):
         for x in savee:
             x = f.encrypt(str(x)[0:len(str(x))].encode())
             b.write(str(x)[1:len(str(x))]+"\n")
+            
 def refresh():
     if(stopapp == False):
         app.processEvents()
