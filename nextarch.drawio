@@ -1,1 +1,84 @@
-<mxfile host="app.diagrams.net" modified="2022-10-04T22:25:17.380Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15" version="20.4.0" etag="iD0PAsjz0Zt1y6qmRMxR" type="github"><diagram id="FesP0f6sB5J1FqpewV9k">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2022-10-04T23:07:50.250Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15" etag="Z6JXWLCZO3fjot0SWEbG" version="20.4.0" type="github">
+  <diagram id="FesP0f6sB5J1FqpewV9k" name="Page-1">
+    <mxGraphModel dx="2053" dy="833" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="CANH76ia24DHqtamVZEA-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.92;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-1" target="CANH76ia24DHqtamVZEA-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-1" target="CANH76ia24DHqtamVZEA-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-1" value="MD" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.azure.laptop" vertex="1" parent="1">
+          <mxGeometry x="-31" y="457" width="83.33" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-56" value="Received Data from users" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-2" target="CANH76ia24DHqtamVZEA-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-2" value="" style="aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image;image=img/lib/active_directory/internet_cloud.svg;" vertex="1" parent="1">
+          <mxGeometry x="225" y="224.79999999999998" width="180" height="113.4" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-6" value="Distributed File DB" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="250" y="270" width="140" height="23" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-7" target="CANH76ia24DHqtamVZEA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-42" value="Send and fetch new data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CANH76ia24DHqtamVZEA-41">
+          <mxGeometry x="0.2611" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.9;entryY=0.02;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-7" target="CANH76ia24DHqtamVZEA-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-44" value="Send and&amp;nbsp;fetch&amp;nbsp;new data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CANH76ia24DHqtamVZEA-43">
+          <mxGeometry x="-0.1503" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-7" value="" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.azure.laptop" vertex="1" parent="1">
+          <mxGeometry x="570" y="140" width="83.33" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-9" target="CANH76ia24DHqtamVZEA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-45" value="Send and&amp;nbsp;fetch&amp;nbsp;new data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CANH76ia24DHqtamVZEA-39">
+          <mxGeometry x="0.2964" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-9" value="" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.azure.laptop" vertex="1" parent="1">
+          <mxGeometry x="278.33" y="50" width="83.33" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-50" value="True" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-10" target="CANH76ia24DHqtamVZEA-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-10" target="CANH76ia24DHqtamVZEA-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-55" value="False" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="CANH76ia24DHqtamVZEA-52">
+          <mxGeometry x="0.4" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-10" value="is device online&amp;nbsp;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="255" y="460" width="120" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-14" value="Use P2P Architecture" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="255" y="555" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-18" value="When opening app" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-49.34" y="310" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="CANH76ia24DHqtamVZEA-51" target="CANH76ia24DHqtamVZEA-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CANH76ia24DHqtamVZEA-51" value="Upload Encrypted message" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="255" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
