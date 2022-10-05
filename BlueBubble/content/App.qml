@@ -88,10 +88,11 @@ Window {
                                            })
                 }
                 ben = bridge.load_user("")
-                console.log(ben[1])
-                name = ben[0]
-                profilep = [ben[1].toString(),ben[2].toString()]
-                print(profilep[0])
+                // console.log(ben[1])
+    
+                name = ben[0]? ben[0] : ""
+                profilep = ben? [ben[1],ben[2]] : ["#00c6ff","#3a7bd5"]
+                
                 if(name !="")
                 {
                     login.visible = false;
@@ -206,7 +207,7 @@ Window {
                 font.styleName: "Thin"
                 font.weight: Font.ExtraLight
                 font.bold: true
-                font.pointSize: 40
+                font.pixelSize: 40
                 font.family: ff
                 anchors.verticalCenterOffset: -224
                 anchors.horizontalCenterOffset: 0
@@ -247,7 +248,7 @@ Window {
                 anchors.centerIn: parent
                 font.family: ff
                 anchors.verticalCenterOffset: -136
-                font.pointSize: 26
+                font.pixelSize: 26
                 PropertyAnimation {
                     id: fade
                     target: subtitle
@@ -269,7 +270,7 @@ Window {
                 height: 74
                 radius: 30
                 text: "Get Started"
-                font.pointSize: 30
+                font.pixelSize: 30
                 font.family: ff
                 font.weight: Font.Light
                 highlighted: true
@@ -285,7 +286,7 @@ Window {
                 }
                 background: Rectangle
                 {
-                    id:loaddd
+      
                     radius: 30
                     color: bu.wl
                     opacity: bu.op
@@ -293,7 +294,7 @@ Window {
                 onClicked: {
                     if(name !=""){
                             profilep = bridge.colorpicker([])
-                            loaddd.color = "#ffffff"
+                            bu.wl = "#ffffff"
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
@@ -311,12 +312,12 @@ Window {
                 text: qsTr("Load Existing Profile")
                 font.hintingPreference: Font.PreferDefaultHinting
                 font.weight: Font.ExtraLight
-                font.pointSize: 21
+                font.pixelSize: 21
                 font.family: ff
                 highlighted: false
                 flat: false
                 onPressed:{
-                    console.log("load profile")
+                    // console.log("load profile")
                 }
                 QtObject{
                     id:lp
@@ -327,7 +328,6 @@ Window {
 
                 background: Rectangle
                 {
-                    id:loadd
                     radius: 30
                     color: lp.cl
                     opacity:lp.op
@@ -590,7 +590,7 @@ Window {
                         width: 53
                         height: 53
                         font.family: "Rubik"
-                        font.pointSize: 38
+                        font.pixelSize: 38
                         font.styleName: "Thin"
                        
                     }
@@ -618,7 +618,6 @@ Window {
                     from: 0
                 }
                 background: Rectangle {
-                    id: loadd1
                     opacity: 0
                     color: "#000000"
                     radius: 30
@@ -865,7 +864,6 @@ Window {
                         property var op: if(roundButton){roundButton.down ? 0.2:0.1}
                     }
                     background: Rectangle {
-                        id: loaddd1
                         opacity: bu1.op
                         color: bu1.wl
                         radius: 30
@@ -901,7 +899,7 @@ Window {
                                 auviskill.running = true
                             }
                     }
-                    font.pointSize: 30
+                    font.pixelSize: 30
                     font.weight: Font.Light
                     font.family: ff
                     z: 7
@@ -931,7 +929,7 @@ Window {
                     width: 383
                     height: 41
                     color: "#ffffff"
-                    text: ids
+                    text: ""
                     font.pixelSize: 13
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
@@ -1012,12 +1010,12 @@ Window {
                     orientation: Gradient.Vertical
                     GradientStop {
                         position: 0
-                        color: profilep[0]
+                        color: profilep[0]?profilep[0] :"#30cfd0"
                     }
 
                     GradientStop {
                         position: 1
-                        color: profilep[1]
+                        color: profilep[1]?profilep[1] :"#ffffff"
                     }
                 }
             }
@@ -1059,7 +1057,7 @@ Window {
                 width: 364
                 height: 47
                 color: "#ffffff"
-                text: "30"
+                text: "120"
                 font.pixelSize: 30
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -1143,11 +1141,10 @@ Window {
                 color: "#ffffff"
                 text: qsTr("<")
                 font.family: "Rubik"
-                font.pointSize: 38
+                font.pixelSize: 38
                 font.styleName: "Thin"
             }
             background: Rectangle {
-                id: loadd2
                 opacity: 0
                 color: "#000000"
                 radius: 30
@@ -1391,7 +1388,7 @@ Window {
                 onClicked: {
     
                     uniId.text = bridge.gencode(name)
-                    countdown.text = 60
+                    countdown.text = 120
                     mainani.running = true
                     viskill.running = true
                     addUser.visible = true
@@ -1429,12 +1426,12 @@ Window {
                     orientation: Gradient.Vertical
                     GradientStop {
                         position: 0
-                        color: profilep[0]
+                        color: profilep[0]?profilep[0]:"#ffffff"
                     }
 
                     GradientStop {
                         position: 1
-                        color: profilep[1]
+                        color: profilep[1]?profilep[1]:"#30cfd0"
                     }
                 }}
 
@@ -1445,99 +1442,99 @@ Window {
 
     Item{
         transform: Scale { xScale: mainWindow.width/500;yScale: mainWindow.width/500}
-    RoundButton {
-        id: exit
-        x: 434
-        y: 20
-        z:3
-        width: 20
-        height: 20
-        visible: true
-        radius: 60
-        
-        Text {
-            color: "white"
-            text: "—"
-            font.pointSize: 13
-            font.family: ff
-            anchors.verticalCenter: parent.verticalCenter
-            x:3
-
-        }
-        
-        layer.mipmap: false
-        layer.enabled: false
-        layer.format: ShaderEffectSource.RGBA
-        focusPolicy: Qt.ClickFocus
-        clip: false
-        highlighted: false
-        flat: false
-        onClicked:mainWindow.showMinimized()
-
-        QtObject{
-            id:buts
-            property string colorDefult :"#1f1f1f1f"
-            property var dynamicColor: if(exit){
-                                           exit.down ? "#f1f1f1f1":colorDefult
-                                       }
-        }
-        background: Rectangle
-        {
-            radius: 7
-            color: buts.dynamicColor
-        }
-
-
-
-    }
-
-    RoundButton {
-        id: roundButton1
-        x: 460
-        y: 20
-        z:3
-        width: 20
-        height: 20
-        visible: true
-        radius: 351
-        Text {
-            color: "white"
-            text: "X"
-            font.pointSize: 12
-            font.family: "Rubik"
-
-            x:6
-            y:3
-
-        }
-        clip: false
-        layer.format: ShaderEffectSource.RGBA
-        layer.mipmap: false
-        flat: false
-        focusPolicy: Qt.ClickFocus
-        //spacing: 9
-        highlighted: false
-        layer.enabled: false
-        onClicked:{
-            Qt.quit()
-            bridge.quit("")
+        RoundButton {
+            id: exit
+            x: 434
+            y: 20
+            z:3
+            width: 20
+            height: 20
+            visible: true
+            radius: 60
             
+            Text {
+                color: "white"
+                text: "—"
+                font.pixelSize: 13
+                font.family: ff
+                anchors.verticalCenter: parent.verticalCenter
+                x:3
+
+            }
             
-        }
-        QtObject{
-            id:butsss
-            property string colorDefult :"#1f1f1f1f"
-            property var dynamicColor: if(roundButton1){
-                                           roundButton1.down ? "#f1f1f1f1":colorDefult
-                                       }
-        }
-        background: Rectangle
-        {
-            radius: 7
-            color: butsss.dynamicColor
+            layer.mipmap: false
+            layer.enabled: false
+            layer.format: ShaderEffectSource.RGBA
+            focusPolicy: Qt.ClickFocus
+            clip: false
+            highlighted: false
+            flat: false
+            onClicked:mainWindow.showMinimized()
+
+            QtObject{
+                id:buts
+                property string colorDefult :"#1f1f1f1f"
+                property var dynamicColor: if(exit){
+                                            exit.down ? "#f1f1f1f1":colorDefult
+                                        }
+            }
+            background: Rectangle
+            {
+                radius: 7
+                color: buts.dynamicColor
+            }
+
+
+
         }
 
-    }
+        RoundButton {
+            id: roundButton1
+            x: 460
+            y: 20
+            z:3
+            width: 20
+            height: 20
+            visible: true
+            radius: 351
+            Text {
+                color: "white"
+                text: "X"
+                font.pixelSize: 12
+                font.family: "Rubik"
+
+                x:6
+                y:3
+
+            }
+            clip: false
+            layer.format: ShaderEffectSource.RGBA
+            layer.mipmap: false
+            flat: false
+            focusPolicy: Qt.ClickFocus
+            //spacing: 9
+            highlighted: false
+            layer.enabled: false
+            onClicked:{
+                Qt.quit()
+                bridge.quit("")
+                
+                
+            }
+            QtObject{
+                id:butsss
+                property string colorDefult :"#1f1f1f1f"
+                property var dynamicColor: if(roundButton1){
+                                            roundButton1.down ? "#f1f1f1f1":colorDefult
+                                        }
+            }
+            background: Rectangle
+            {
+                radius: 7
+                color: butsss.dynamicColor
+            }
+
+        }
     }
     
 

@@ -26,9 +26,12 @@ QML_IMPORT_MAJOR_VERSION = 1
 class Bridge(QObject):
     @Slot(list, result=str)
     def login(self,a):
-        with open((os.fspath(Path(__file__).resolve().parent / "user.txt")), 'w') as b:
-            for x in a:
-                b.write(x+"\n")
+        try:
+            with open((os.fspath(Path(__file__).resolve().parent / "user.txt")), 'w') as b:
+                for x in a:
+                    b.write(x+"\n")
+        except:
+            return
         
         
         
@@ -68,7 +71,7 @@ class Bridge(QObject):
                     datagram = str(decrypted)[1:len(str(decrypted))]
                     datagram = datagram[1:len(str(datagram))-1]
                     data.append(str(datagram).split(","))
-            print(data)
+            #print(data)
             return data
         else:
             return [-1]
@@ -77,24 +80,27 @@ class Bridge(QObject):
        
     @Slot(list, result=list)
     def contactIndex(self,array):
-        print(array)
+        #print(array)
         data = [int(array[0].index("element")),int(array[0].index("name")),int(array[0].index("c1")),int(array[0].index("c2")),int(array[0].index("ip")),int(array[0].index("port")),int(array[0].index("uport")),len(array)]
         return data
     
     @Slot(list, result=list)
     def messageIndex(self,array):
-        print(array)
+        #print(array)
         data = [int(array[0].index("element")),int(array[0].index("name")),len(array)]
         return data
     
     @Slot(str, result=list)
     def load_user(self,b):
         data = []
-        with open((os.fspath(Path(__file__).resolve().parent / "user.txt"))) as b:
-            for x in b:
-                data.append(x[:-1])
+        try:
+            with open((os.fspath(Path(__file__).resolve().parent / "user.txt"))) as b:
+                for x in b:
+                    data.append(x[:-1])
         
-        return data
+            return data
+        except:
+            return
 
 
     
@@ -107,7 +113,7 @@ class Bridge(QObject):
     @Slot(str, result=str)
     def message(self,a):
         global port,online,loadedChat,loop,ip,uport
-        print(a)
+        #print(a)
         a = a.split(",")
         port = int(a[1])
         ip = str(a[0])
@@ -133,7 +139,7 @@ class Bridge(QObject):
         global port
         port =str(random.randint(11111,65534))
         portlist = ports()
-        print(portlist)
+        #print(portlist)
         while port in portlist:
             port =str(random.randint(11111,65534))
         code = str(ip_ad+","+port+","+username)
@@ -156,14 +162,14 @@ class Bridge(QObject):
         global port
         arr = ports()
         arr.append(port)
-        print(arr)
+        #print(arr)
         savetoports(arr)
-        print(id)
+        #print(id)
         decrypted = f.decrypt(bytes("gAAAAABj"+str(id)+"=", 'utf-8'))
         mainf = str(decrypted)[1:len(str(decrypted))]
-        print(mainf)
+        #print(mainf)
         mainf = mainf[1:len(str(mainf))-1].split(",")
-        print(mainf)
+        #print(mainf)
         col = internalcolorpicker()
         return [" contact.qml",mainf[2],col[0],col[1],mainf[0],mainf[1],port]
 
@@ -219,7 +225,7 @@ class Server(DatagramProtocol):
             # self.transport.write(addresses.encode('utf-8'), addr)
             self.transport.write("yo".encode('utf-8'), addr)
             self.clients.add(addr)
-        print(datagram)      
+        #print(datagram)      
         
 
 class Client(DatagramProtocol):
@@ -278,7 +284,7 @@ def ports():
         for line in b:
             decrypted =f.decrypt(bytes(line,'utf-8'))
             if(len(str(decrypted)) !=5):
-                print(str(decrypted)[2:len(str(decrypted))-1])
+                #print(str(decrypted)[2:len(str(decrypted))-1])
                 data.append(str(decrypted)[2:len(str(decrypted))-1])
             else:
                 data.append(str(decrypted)[1:len(str(decrypted))])
@@ -308,8 +314,8 @@ if __name__ == "__main__":
     online=False
     loadedChat = False
     f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
-    print("   ")
-    print(socket.gethostbyname(socket.gethostname()))
+    #print("   ")
+    #print(socket.gethostbyname(socket.gethostname()))
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     ip_ad = s.getsockname()[0]
