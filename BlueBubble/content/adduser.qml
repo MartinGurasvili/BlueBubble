@@ -6,6 +6,9 @@ Item {
     y: 0
     width: 495
     height: 100
+    property string msg:""
+    property color c1:"#2af598"
+    property color c2:"#009efd"
     MouseArea
     {
         width: parent.width

@@ -71,6 +71,8 @@ Item {
             textInput1.selectByMouse =true;
             textInput1.focus = true;
             textInput1.selectByMouse = false;
+            
+
             for(var x = 0;x<allmsgs.length;x++)
             {
                 if(allmsgs[x][0]==text3.text)
@@ -90,18 +92,30 @@ Item {
                 currentmsgs = temp
             }
 
+            bridge.message([ip,port,uport])
+            
+            var count = 0
+             while(true){
+                if(allcon.get(count).element.toString()=="element")
+                {
+                    break
+                }
+            count+=1
+            }
+    
             for(var y = 1;y<allcon.count;y++)
             {
 
                 if(allcon.get(y).name.toString()==text3.text)
                 {
 
-                    allcon.move(y,2,1)
+                    allcon.move(y,count-1,1)
                 }
             }
+            
 
 
-            bridge.message([ip,port,uport])
+            
         }
     }
     Rectangle {

@@ -160,7 +160,6 @@ Window {
                     if (event.key == Qt.Key_Return) {
                         if(name !=""){
                             profilep = bridge.colorpicker([])
-                            loaddd.color = "#ffffff"
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
@@ -303,7 +302,7 @@ Window {
 
                 }
             }
-            Button {
+            RoundButton {
                 id: button
                 x: 122
                 y: 600
@@ -481,13 +480,13 @@ Window {
 
                         Loader {
                             id: loaderr
-                            source: element
+                            source : element
 
                             onLoaded:{
 
 
                                 loaderr.item.msg= name!="" ? name :loaderr.item.msg
-
+                                
                             }
 
                         }
@@ -575,7 +574,7 @@ Window {
                 radius: 30
             }
 
-            Button {
+            RoundButton {
                 id: backch
                 x: 8
                 y: 23
@@ -874,7 +873,7 @@ Window {
                                 var count = 0
                                  
                                 while(true){
-                                    if(allcon.get(count).element.toString()=="spacer.qml")
+                                    if(allcon.get(count).element.toString()=="element")
                                     {
                                         break
                                     }
@@ -957,17 +956,18 @@ Window {
                         if (event.key == Qt.Key_Return) {
                             if(textInput2.text !=""){
                                 aduserdata = bridge.adduser(textInput2.text)
-                                bridge.notif("Added User",aduserdata[1])
                                 var count = 0
                                  
                                 while(true){
-                                    if(allcon.get(count).element.toString()=="spacer.qml")
+                                    if(allcon.get(count).element.toString()=="element")
                                     {
                                         break
                                     }
                                 count+=1
                                 }
-                                allcon.insert(2,{
+                            
+                                bridge.notif("Added User",aduserdata[1])
+                                allcon.insert(count+1,{
                                                element:aduserdata[0],
                                                name:aduserdata[1],
                                                 c1:aduserdata[2],
@@ -982,6 +982,7 @@ Window {
                                 mainn.visible = true
                                 mainanii.running = true
                                 auviskill.running = true
+                            
                             }}
                     }
                     font.styleName: "Light"
@@ -1115,7 +1116,7 @@ Window {
             }
         }
 
-        Button {
+        RoundButton {
             id: backmain
             x: 8
             y: 23
@@ -1279,7 +1280,7 @@ Window {
                 flickableDirection: Flickable.VerticalFlick
 
                 ListView{
-
+                    
                     x: 0
                     y: 0
                     width: 500
@@ -1288,14 +1289,15 @@ Window {
                     orientation: Qt.Vertical
                     model:allcon
                     delegate:Row {
-
                         Loader {
                             id: loader
                             source: element
-                            onLoaded:{ loader.item.msg=name
-                                loader.item.c1=c1
-                                loader.item.c2=c2}
-
+                            onLoaded:{ 
+                                // loader.source = element
+                                item.msg=name
+                                item.c1=c1
+                                item.c2=c2}
+                             
                         }
 
 
@@ -1374,7 +1376,7 @@ Window {
             }
             
 
-            Button {
+            RoundButton {
                 id: rectangle
                 x: 21
                 y: 20

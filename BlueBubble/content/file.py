@@ -46,14 +46,19 @@ class Bridge(QObject):
         data = []
         headers = {v.data().decode(): k for k, v in model.roleNames().items()}
         for i in range(model.rowCount()):
+            
             row = dict()
             for name, role in headers.items():
+                
                 value = model.index(i, 0).data(role)
+                print(value)
                 row[name] = value
             if(i == 0):
                 data.append(f.encrypt((",".join(list(row))).encode()))
-            data.append(f.encrypt((",".join(list(row.values()))).encode()))
-        # print(data)
+                start = (",".join(list(row)))
+            if((",".join(list(row.values()))) != start):
+                data.append(f.encrypt((",".join(list(row.values()))).encode()))
+        
         with open((os.fspath(Path(__file__).resolve().parent / filename)), 'w') as b:
             for x in data:
                 b.write(str(x)[1:len(str(x))]+"\n")
