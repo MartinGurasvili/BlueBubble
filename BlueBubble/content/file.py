@@ -10,14 +10,10 @@ from PySide6.QtQml import QQmlApplicationEngine , QmlElement
 from PySide6.QtCore import QObject, Slot
 from cryptography.fernet import Fernet
 from twisted.internet.protocol import DatagramProtocol
-from twisted.internet import reactor
-from cryptography.fernet import Fernet
+from twisted.internet import reactor,task
 from random import randint
+import notifypy
 import time
-from twisted.internet.protocol import DatagramProtocol
-from twisted.internet import reactor
-from twisted.internet import task
-import pync
 # from win10toast import ToastNotifier
 QML_IMPORT_NAME = "backend"
 QML_IMPORT_MAJOR_VERSION = 1
@@ -51,7 +47,7 @@ class Bridge(QObject):
             for name, role in headers.items():
                 
                 value = model.index(i, 0).data(role)
-                print(value)
+                # print(value)
                 row[name] = value
             if(i == 0):
                 data.append(f.encrypt((",".join(list(row))).encode()))
@@ -59,7 +55,7 @@ class Bridge(QObject):
             if((",".join(list(row.values()))) != start):
                 data.append(f.encrypt((",".join(list(row.values()))).encode()))
         
-        with open((os.fspath(Path(__file__).resolve().parent / filename)), 'w') as b:
+        with open((os.fspath(Path(__file__).resolve().parent / filename)), 'w+') as b:
             for x in data:
                 b.write(str(x)[1:len(str(x))]+"\n")
     
@@ -204,17 +200,13 @@ class Bridge(QObject):
             app.processEvents()
     @Slot(str,str,result=str)
     def notif(self,titl,messag):
-        pync.notify(
-        title = titl,
-        message = messag,
-        app_icon = (os.fspath(Path(__file__).resolve().parent / "images/bb.png")),
-        timeout = 10
-        )
-        # toaster = ToastNotifier()
-        # toaster.show_toast(titl,
-        #            messag,
-        #            icon_path=(os.fspath(Path(__file__).resolve().parent / "bb.png")),
-        #            duration=10)
+        notd = notifypy.Notify()
+        notd.application_name = titl
+        notd.title = messag
+        notd.message = ""
+        notd.icon = (os.fspath(Path(__file__).resolve().parent / "bb.png"))
+        notd.send()
+        
         
 def internalcolorpicker():
         return [colors[random.randint(0,len(colors))],colors[random.randint(0,len(colors))]]
@@ -318,6 +310,7 @@ if __name__ == "__main__":
     stopapp = False
     online=False
     loadedChat = False
+    #this is changes on build
     f = Fernet(b'5J6WmI-KgUFRzqnqO_jqnGrSAyYFKEotMHTi4GGhFAE=')
     #print("   ")
     #print(socket.gethostbyname(socket.gethostname()))

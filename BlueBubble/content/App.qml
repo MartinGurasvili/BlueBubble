@@ -156,15 +156,20 @@ Window {
                 onTextChanged: {
                     name = text
                 }
-                Keys.onPressed: {
+                Keys.onPressed:event => {
                     if (event.key == Qt.Key_Return) {
                         if(name !=""){
+                            bridge.notif("Welcome To BlueBubble",name)
                             profilep = bridge.colorpicker([])
                             logout.running= true
                             mainn.visible = true;
                             mainanii.running= true
                             bridge.login([name,profilep[0],profilep[1]])
-                        }}
+                        }
+                    }
+                    
+                    
+                        
                 }
                 MouseArea {
                     id :ma
@@ -292,6 +297,7 @@ Window {
                 }
                 onClicked: {
                     if(name !=""){
+                            bridge.notif("Welcome To BlueBubble",name)
                             profilep = bridge.colorpicker([])
                             bu.wl = "#ffffff"
                             logout.running= true
@@ -689,7 +695,7 @@ Window {
             }
            
 
-            Keys.onPressed: {z
+            Keys.onPressed: event => {
                 if (event.key == Qt.Key_Return) {
                     if(textInput1.text!=""){
                         currentmsgs.insert(1,{
@@ -716,7 +722,7 @@ Window {
             width: 40
             height: 40
             visible: true
-            source: "images/plane.png"
+            source: "plane.png"
             antialiasing: true
             mipmap: true
             asynchronous: true
@@ -891,11 +897,11 @@ Window {
                                                 uport:aduserdata[6]
                                            })
                                 textInput2.text = ""
-                                bridge.saveListModel(allcon,"contacts.txt")
                                 aufadeout.running = true
                                 mainn.visible = true
                                 mainanii.running = true
                                 auviskill.running = true
+                                bridge.saveListModel(allcon,"contacts.txt")
                             }
                     }
                     font.pixelSize: 30
@@ -929,7 +935,7 @@ Window {
                     height: 41
                     color: "#ffffff"
                     text: ""
-                    font.pixelSize: 13
+                    font.pixelSize: (textInput2.text.length<200) ? 12 : 8 
                     wrapMode: Text.Wrap
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -952,7 +958,7 @@ Window {
                         }
                         propagateComposedEvents: true
                     }
-                    Keys.onPressed: {
+                    Keys.onPressed: event => {
                         if (event.key == Qt.Key_Return) {
                             if(textInput2.text !=""){
                                 aduserdata = bridge.adduser(textInput2.text)
@@ -977,11 +983,11 @@ Window {
                                                 uport:aduserdata[6]
                                            })
                                 textInput2.text = ""
-                                bridge.saveListModel(allcon,"contacts.txt")
                                 aufadeout.running = true
                                 mainn.visible = true
                                 mainanii.running = true
                                 auviskill.running = true
+                                bridge.saveListModel(allcon,"contacts.txt")
                             
                             }}
                     }
@@ -1106,7 +1112,7 @@ Window {
                 readOnly: true
                 color: "#ffffff"
                 text: "ZPqAPESu_Q3brbmHhphR67htGIV9aDKBiEJFFC7eVuK7mCE5NQfM5wmcCtoP7fIBypF6nQWTnILaCKB--gCuiW8XsCVgYSwU_K0kjfZ8mwlu0"
-                font.pixelSize: 18
+                font.pixelSize: (uniId.text.length<200) ? 14 : 10 
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.Wrap

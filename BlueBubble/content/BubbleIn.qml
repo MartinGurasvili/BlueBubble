@@ -82,7 +82,7 @@ Item {
             width: 77
             height: 27
             opacity: 0
-            source: "images/heart.svg.png"
+            source: "heart.svg.png"
             focus: true
             antialiasing: true
             visible:true
