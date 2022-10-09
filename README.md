@@ -7,10 +7,8 @@
       This is a Decentralised Peer to Peer Chat Application. That makes sure only necessary data is Decentralised whilst the majority is local to the device. Loaded with a modern UI and features other P2P apps lack.
       <br />
       <br>
-      <br />
-      <a href="https://github.com/MartinGurasvili/BlueBubble/releases/tag/v1.0.0M"><h3><img width="20px" height="20px" alt="apple" src="https://user-images.githubusercontent.com/76784461/154564937-57c93aa0-69f8-497c-97d6-33b1d7d411e0.png"> Install Now</h3></a>
-      <p><a href="https://github.com/MartinGurasvili/Calculator/releases/download/v1.0.0w/Calculator.zip"><h3><img width="20px" height="20px"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Coming Soon</h3></a>
-      <br></p>
+      <a href="https://github.com/MartinGurasvili/BlueBubble/releases/tag/v1.0.0M"><h3><img width="20px" height="20px" alt="apple" src="https://user-images.githubusercontent.com/76784461/154564937-57c93aa0-69f8-497c-97d6-33b1d7d411e0.png"> Install Now</h3> </a>
+      <a href="https://github.com/MartinGurasvili/Calculator/releases/download/v1.0.0w/Calculator.zip"><h3><img width="20px" height="20px"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Coming Soon</h3> </a>
 
  
 
