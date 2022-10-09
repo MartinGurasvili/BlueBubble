@@ -12,18 +12,30 @@
       <p><a href="https://github.com/MartinGurasvili/Calculator/releases/download/v1.0.0w/Calculator.zip"><h3><img style="width:2%"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Coming Soon</h3></a>
       <br></p>
 
-  </div>
-    <h1 align="center">Anonymous Users</h1>
-    <div align="center">
-    <img  style="width:60%" alt="3" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
+ 
 
 
-<h1 align="center">Demonstration</h1>
+<h1 align="center">Demo - Gallery</h1>
 </div>
 <div align="center">
-  <img  style="width:40%" alt="2" src="https://user-images.githubusercontent.com/76784461/190025520-e8231609-e6d2-4a08-a429-3cfddb71db13.png">
-    <img style="width:40%"  alt="1" src="https://user-images.githubusercontent.com/76784461/190025204-e6a9f96c-7106-4410-b44c-a39f3aa1798d.png">
+<img style="width:40%"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
+
+
+</div>
+<div align="center">
+<img  style="width:40%" alt="2" src="https://user-images.githubusercontent.com/76784461/190025520-e8231609-e6d2-4a08-a429-3cfddb71db13.png">
+<img style="width:40%"  alt="1" src="https://user-images.githubusercontent.com/76784461/190025204-e6a9f96c-7106-4410-b44c-a39f3aa1798d.png">
+<img style="width:70%" alt="2" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
+<p align="center">
+    The Demonstration above shows the login proccess - showing that only a username is needed - allowing users to stay anonymous
+    </p>
     
+<p align="center">
+(My Machine to the left) (Virtual Machine to the right)<br>
+    The Demonstration above shows adding and messaging between two machines on different networks
+    </p>
+    
+ 
 </div>
 <br>
 <h1 align="center">The Next Steps</h1>
