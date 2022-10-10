@@ -114,11 +114,12 @@ class Bridge(QObject):
     @Slot(str, result=str)
     def message(self,a):
         global port,online,loadedChat,loop,ip,uport
-        #print(a)
+        # print(a)
         a = a.split(",")
         port = int(a[1])
         ip = str(a[0])
-        uport =int(a[2])
+        uport = int(a[2])
+
         try:
             reactor.listenUDP(9999,Server())
             # print("started server")
@@ -137,13 +138,13 @@ class Bridge(QObject):
         reactor.run()
     @Slot(str, result=str)
     def gencode(self,username):
-        global port
-        port =str(random.randint(11111,65534))
+        global genport
+        genport =str(random.randint(11111,65534))
         portlist = ports()
         #print(portlist)
-        while port in portlist:
-            port =str(random.randint(11111,65534))
-        code = str(ip_ad+","+port+","+username)
+        while genport in portlist:
+            genport =str(random.randint(11111,65534))
+        code = str(ip_ad+","+genport+","+username)
         addr = f.encrypt(code.encode())
         code = addr[8:-1]
         code = str(code)[2:-1]
@@ -160,9 +161,9 @@ class Bridge(QObject):
             
     @Slot(str, result=list)
     def adduser(self,id):
-        global port
+        global genport
         arr = ports()
-        arr.append(port)
+        arr.append(genport)
         #print(arr)
         savetoports(arr)
         #print(id)
@@ -172,7 +173,7 @@ class Bridge(QObject):
         mainf = mainf[1:len(str(mainf))-1].split(",")
         #print(mainf)
         col = internalcolorpicker()
-        return [" contact.qml",mainf[2],col[0],col[1],mainf[0],mainf[1],port]
+        return [" contact.qml",mainf[2],col[0],col[1],mainf[0],mainf[1],genport]
 
         
     
@@ -238,9 +239,6 @@ class Client(DatagramProtocol):
         self.address = None
         self.server = host,9999
         
-    
-        
-
     def startProtocol(self):
         # print("Working on id:",self.id)
         time.sleep(1)
@@ -263,6 +261,7 @@ class Client(DatagramProtocol):
             
     def send_message(self):
         global sendmsg
+        # print(self.address)
         while True:
             if(stopapp == True):
                 break
@@ -270,6 +269,7 @@ class Client(DatagramProtocol):
             if sendmsg != "":
                 if sendmsg !="ready":
                     sendmsg = self.f.encrypt(sendmsg.encode())
+                    # print(ip)
                     self.transport.write(sendmsg,self.address)
                     
                 sendmsg = ""
@@ -303,6 +303,7 @@ def refresh():
 if __name__ == "__main__":
     colors = ["#ffafbd","#ffc3a0","#2193b0","#753a88","#cc2b5e","#ee9ca7","#ffdde1","#42275a","#734b6d","#2c3e50","#bdc3c7","#de6262","#ffb88c","#dd5e89","#56ab2f","#a8e063","#614385","#516395","#ef629f","#00cdac","#02aab0","#000428","#004e92","#ddd6f3","#faaca8","#61045f","#aa076b"]
     port = 0
+    genport = 0
     uport = 0
     ip = ""
     msg = ""
