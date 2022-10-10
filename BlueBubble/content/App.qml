@@ -12,6 +12,10 @@ Window {
     width:500
     maximumWidth: 800
     maximumHeight: 1280
+     
+    FontLoader { 
+    id: rubik
+    source: "https://github.com/MartinGurasvili/BlueBubble/raw/main/BlueBubble/content/Rubik.ttf" }
     
     flags: Qt.Window | Qt.FramelessWindowHint
     visible: true
@@ -579,7 +583,7 @@ Window {
                 color: "#ff0000"
                 radius: 30
             }
-
+            
             RoundButton {
                 id: backch
                 x: 8
@@ -594,7 +598,7 @@ Window {
                         y: 2
                         width: 53
                         height: 53
-                        font.family: "Rubik"
+                        font.family: rubik.font.family
                         font.pixelSize: 38
                         font.styleName: "Thin"
                        
@@ -1147,7 +1151,7 @@ Window {
                 height: 53
                 color: "#ffffff"
                 text: qsTr("<")
-                font.family: "Rubik"
+                font.family: rubik.font.family
                 font.pixelSize: 38
                 font.styleName: "Thin"
             }
@@ -1509,7 +1513,7 @@ Window {
                 color: "white"
                 text: "X"
                 font.pixelSize: 12
-                font.family: "Rubik"
+                font.family: rubik.font.family
 
                 x:6
                 y:3
