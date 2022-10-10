@@ -271,17 +271,17 @@ class Client(DatagramProtocol):
             if(stopapp == True):
                 break
             print(self.address)
-            if sendmsg != "":
-                if sendmsg !="ready":
-                    sendmsg = self.f.encrypt(sendmsg.encode())
-                    # print(ip)
-                    if self.address:
+            if self.address:
+                if sendmsg != "":
+                    if sendmsg !="ready":
+                        sendmsg = self.f.encrypt(sendmsg.encode())
+                        
                         self.transport.write(sendmsg,self.address)
-                    else:
-                        reactor.callInThread(self.startProtocol)
-                        break
-                sendmsg = ""
-            time.sleep(2)
+                    sendmsg = ""
+                time.sleep(2)
+            else:
+                reactor.callInThread(self.startProtocol)
+                break
             
 def ports():
     data = []
