@@ -10,31 +10,38 @@
       <a href="https://github.com/MartinGurasvili/BlueBubble/releases/tag/v1.0.0M"><b><img width="20px" height="20px" alt="apple" src="https://user-images.githubusercontent.com/76784461/154564937-57c93aa0-69f8-497c-97d6-33b1d7d411e0.png"> Install Now</b> </a><br><br>
       <a href="https://github.com/MartinGurasvili/Calculator/releases/download/v1.0.0w/Calculator.zip"><b><img width="20px" height="20px"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Coming Soon</b> </a>
 
+ <br>
+<div align="center">
+<h1 align="center">Account Creation</h1>
+<img style="width:60%" alt="2" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
+<p align="center">
+    The Demonstration above shows the login proccess - showing that only a username is needed - allowing users to stay anonymous
+    </p>
+    <h1 align="center">Adding Other Users</h1>
+    <img style="width:80%" alt="2" src="https://user-images.githubusercontent.com/76784461/194955052-a1c6accb-0206-45a6-97f4-95eece079950.gif">
+    <br>
+<p align="center">
+(My Machine to the left) | (Virtual Machine to the right)<br>
+    The Demonstration above shows adding users from two machines on different networks
+    </p>
+    <h1 align="center">Messaging</h1>
+    <img style="width:80%" alt="2" src="https://user-images.githubusercontent.com/76784461/194959865-1917f779-4ab6-4671-b890-180702c3f6fb.gif">
+<p align="center">
+
+(My Machine to the left) | (Virtual Machine to the right)<br>
+    The Demonstration above shows messaging between two machines on different networks
+    </p>
+    
  
-
-
-<h1 align="center">Demo - Gallery</h1>
+</div>
+<h1 align="center">Notifications</h1>
 </div>
 <div align="center">
 <img style="width:40%"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
 
 
 </div>
-<div align="center">
-<img  style="width:40%" alt="2" src="https://user-images.githubusercontent.com/76784461/190025520-e8231609-e6d2-4a08-a429-3cfddb71db13.png">
-<img style="width:40%"  alt="1" src="https://user-images.githubusercontent.com/76784461/190025204-e6a9f96c-7106-4410-b44c-a39f3aa1798d.png">
-<img style="width:70%" alt="2" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
-<p align="center">
-    The Demonstration above shows the login proccess - showing that only a username is needed - allowing users to stay anonymous
-    </p>
-    
-<p align="center">
-(My Machine to the left) (Virtual Machine to the right)<br>
-    The Demonstration above shows adding and messaging between two machines on different networks
-    </p>
-    
- 
-</div>
+
 <br>
 <h1 align="center">The Next Steps</h1>
     <div align="center">
