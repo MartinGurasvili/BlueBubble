@@ -23,7 +23,7 @@ class Bridge(QObject):
     @Slot(list, result=str)
     def login(self,a):
         try:
-            with open((os.fspath(Path(__file__).resolve().parent / "user.txt")), 'w') as b:
+            with open((os.fspath(Path(__file__).resolve().parent / "user.txt")), 'w+') as b:
                 for x in a:
                     b.write(x+"\n")
         except:
@@ -113,7 +113,7 @@ class Bridge(QObject):
         
     @Slot(str, result=str)
     def message(self,a):
-        global port,online,loadedChat,loop,ip,uport
+        global port,online,loadedChat,loop,ip,uport,sendmsg
         # print(a)
         a = a.split(",")
         port = int(a[1])
@@ -125,6 +125,7 @@ class Bridge(QObject):
             # print("started server")
         except:
             # print("server already made")
+            sendmsg = "ready"
             online = True
         
         thread1 = threading.Thread(target=reactor.listenUDP(port,Client(ip,port,"")))
@@ -217,12 +218,15 @@ class Server(DatagramProtocol):
     def __init__(self):
         self.clients = set()
     def datagramReceived(self,datagram,addr):
-        datagram = datagram.decode('utf-8')
-        if datagram =="ready":
-            addresses = "\n".join([str(x) for x in self.clients])
-            # self.transport.write(addresses.encode('utf-8'), addr)
-            self.transport.write("yo".encode('utf-8'), addr)
-            self.clients.add(addr)
+        try:
+            datagram = datagram.decode('utf-8')
+            if datagram =="ready":
+                addresses = "\n".join([str(x) for x in self.clients])
+                # self.transport.write(addresses.encode('utf-8'), addr)
+                self.transport.write("yo".encode('utf-8'), addr)
+                self.clients.add(addr)
+        except:
+            print(datagram)
         #print(datagram)      
         
 
@@ -241,7 +245,8 @@ class Client(DatagramProtocol):
         
     def startProtocol(self):
         # print("Working on id:",self.id)
-        time.sleep(1)
+        self.transport.write("ready".encode('utf-8'),self.server)
+        time.sleep(2)
         self.transport.write("ready".encode('utf-8'),self.server)
         reactor.callInThread(self.send_message)
 
@@ -261,17 +266,20 @@ class Client(DatagramProtocol):
             
     def send_message(self):
         global sendmsg
-        # print(self.address)
+        
         while True:
             if(stopapp == True):
                 break
-            # print(sendmsg)
+            print(self.address)
             if sendmsg != "":
                 if sendmsg !="ready":
                     sendmsg = self.f.encrypt(sendmsg.encode())
                     # print(ip)
-                    self.transport.write(sendmsg,self.address)
-                    
+                    if self.address:
+                        self.transport.write(sendmsg,self.address)
+                    else:
+                        reactor.callInThread(self.startProtocol)
+                        break
                 sendmsg = ""
             time.sleep(2)
             
