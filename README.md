@@ -8,7 +8,7 @@
       <br />
       <br>
       <a href="https://github.com/MartinGurasvili/BlueBubble/releases/tag/v1.0.0M"><b><img width="20px" height="20px" alt="apple" src="https://user-images.githubusercontent.com/76784461/154564937-57c93aa0-69f8-497c-97d6-33b1d7d411e0.png"> Install Now</b> </a><br><br>
-      <a href="https://github.com/MartinGurasvili/Calculator/releases/download/v1.0.0w/Calculator.zip"><b><img width="20px" height="20px"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Coming Soon</b> </a>
+      <a href="https://github.com/MartinGurasvili/BlueBubble/releases/tag/v1.0.0W"><b><img width="20px" height="20px"  alt="win" src="https://pnggrid.com/wp-content/uploads/2021/06/Windows-11-Icon-Logo.png"> Install Now</b> </a>
 
  <br>
 <div align="center">
