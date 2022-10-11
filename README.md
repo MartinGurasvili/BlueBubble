@@ -13,7 +13,7 @@
  <br>
 <div align="center">
 <h1 align="center">Account Creation</h1>
-<img style="width:60%" alt="2" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
+<img style="width:50%" alt="2" src="https://user-images.githubusercontent.com/76784461/194154199-c61602fd-3932-4fb1-b0cc-2cc2b4629338.gif">
 <p align="center">
     The Demonstration above shows the login proccess - showing that only a username is needed - allowing users to stay anonymous
     </p>
@@ -37,8 +37,8 @@
 <h1 align="center">Notifications</h1>
 </div>
 <div align="center">
-<img style="height:230px"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
-<img style="height:230px"  alt="1" src="https://user-images.githubusercontent.com/76784461/195191393-7ae57e2c-47de-4bf2-8b26-b514446c675f.png">
+<img style="height:200px"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
+<img style="height:200px"  alt="1" src="https://user-images.githubusercontent.com/76784461/195191393-7ae57e2c-47de-4bf2-8b26-b514446c675f.png">
 
 
 </div>
