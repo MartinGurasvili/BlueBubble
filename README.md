@@ -37,8 +37,8 @@
 <h1 align="center">Notifications</h1>
 </div>
 <div align="center">
-<img style="height:250px"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
-<img style="height:250px"  alt="1" src="https://user-images.githubusercontent.com/76784461/195191393-7ae57e2c-47de-4bf2-8b26-b514446c675f.png">
+<img style="height:230px"  alt="1" src="https://user-images.githubusercontent.com/76784461/194754796-5f7d34a5-302e-403b-ad60-d78f4284e072.png">
+<img style="height:230px"  alt="1" src="https://user-images.githubusercontent.com/76784461/195191393-7ae57e2c-47de-4bf2-8b26-b514446c675f.png">
 
 
 </div>
